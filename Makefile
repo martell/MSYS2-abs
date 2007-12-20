@@ -27,6 +27,7 @@ uninstall:
 
 zip:
 	mkdir -p $(BUILDDIR)/abs
+	cp Makefile $(BUILDDIR)/abs/
 	cp abs $(BUILDDIR)/abs/
 	cp -R conf $(BUILDDIR)/abs/
 	cd $(BUILDDIR) && tar czf abs.tar.gz "abs/"
