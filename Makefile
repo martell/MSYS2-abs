@@ -1,3 +1,4 @@
+BUILDDIR = build
 CONFDIR = $(DESTDIR)/etc/abs
 
 all:
@@ -23,3 +24,11 @@ uninstall:
 	rm $(CONFDIR)/supfile.unstable
 	rm $(CONFDIR)/supfile.community
 	rm $(CONFDIR)/supfile.testing
+
+zip:
+	mkdir -p $(BUILDDIR)/abs
+	cp abs $(BUILDDIR)/abs/
+	cp -R conf $(BUILDDIR)/abs/
+	cd $(BUILDDIR) && tar czf abs.tar.gz "abs/"
+	mv $(BUILDDIR)/abs.tar.gz .
+	rm -rf $(BUILDDIR)
