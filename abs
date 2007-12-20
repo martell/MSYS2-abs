@@ -1,7 +1,6 @@
 #!/bin/bash -e
 #
 #   abs - download a PKGBUILD tree from a CVS repository
-#   Generated from abs.in; do not edit by hand.
 #
 #   Copyright (c) 2002-2007 by Judd Vinet <jvinet@zeroflux.org>
 #
@@ -28,11 +27,7 @@
 #  E_INVALID_OPTION : User has passed unknown/invalid option to script.
 ##
 
-# gettext initialization
-export TEXTDOMAIN='pacman'
-export TEXTDOMAINDIR='/usr/share/locale'
-
-myver='3.1.0devel'
+myver='3.1.0'
 BUG_REPORT_EMAIL='pacman-dev@archlinux.org'
 CONFDIR="/etc/abs"
 PASSIVE='m'
@@ -55,43 +50,43 @@ msg() {
 
 error() {
 	local mesg=$1; shift
-	printf  "==> $(gettext "ERROR:") ${mesg}\n" "$@" >&2
+	printf  "==> ERROR: ${mesg}\n" "$@" >&2
 }
 
 
 usage() {
-	printf "$(gettext "abs (pacman) %s - download a PKGBUILD tree from a CVS repository")\n\n" "$myver"
-	printf "$(gettext "Usage %s [options] [repository...]")\n\n" "$0"
-	printf "$(gettext "Options:")\n"
-	printf "$(gettext "  -p, --passive  The connection is opened in passive mode.")\n"
+	printf "abs (pacman) %s - download a PKGBUILD tree from a CVS repository\n\n" "$myver"
+	printf "Usage %s [options] [repository...]\n\n" "$0"
+	printf "Options:\n"
+	printf "  -p, --passive  The connection is opened in passive mode.\n"
 	echo
-	printf "$(gettext "  -h, --help     Display this help message then exit.")\n"
-	printf "$(gettext "  -V, --version  Display version information then exit.")\n"
+	printf "  -h, --help     Display this help message then exit.\n"
+	printf "  -V, --version  Display version information then exit.\n"
 	echo
-	printf "$(gettext "\
+	printf "\
 abs will synchronize build scripts from the CVS repository\n\
 into %s. You can follow different package trees by\n\
 editing %s files. If no argument is given, abs\n\
-will synchronize from supfiles specified in %s.\n\n")" \
+will synchronize from supfiles specified in %s.\n\n" \
 		"$ABSROOT" "$CONFDIR/supfile.*" "$CONFDIR/abs.conf"
-	printf "$(gettext "Report bugs to <%s>.")\n" "$BUG_REPORT_EMAIL"
+	printf "Report bugs to <%s>.\n" "$BUG_REPORT_EMAIL"
 }
 
 version() {
 	printf "abs (pacman) %s\n" "$myver"
-	printf "$(gettext "\
+	printf "\
 Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>.\n\n\
 This is free software; see the source for copying conditions.\n\
-There is NO WARRANTY, to the extent permitted by law.\n")"
+There is NO WARRANTY, to the extent permitted by law.\n"
 }
 
 
 ##
 # Signal Traps
 ##
-trap 'error "$(gettext "TERM signal caught. Exiting...")"; exit 1' TERM HUP QUIT
-trap 'error "$(gettext "Aborted by user! Exiting...")"; exit 1' INT
-trap 'error "$(gettext "An unknown error has occured. Exiting...")"; exit 1' ERR
+trap 'error "TERM signal caught. Exiting..."; exit 1' TERM HUP QUIT
+trap 'error "Aborted by user! Exiting..."; exit 1' INT
+trap 'error "An unknown error has occured. Exiting..."; exit 1' ERR
 
 
 # Parse Command Line Options.
@@ -125,10 +120,10 @@ fi
 
 # Check permissions and programs.
 if [ ! -d "$ABSROOT" ]; then
-	error "$(gettext "%s does not exist or is not a directory.")" "$ABSROOT"
+	error "%s does not exist or is not a directory." "$ABSROOT"
 	exit 1 # E_CONFIG_ERROR
 elif [ ! -w "$ABSROOT" ]; then
-	error "$(gettext "You do not have write permissions in %s.")" "$ABSROOT"
+	error "You do not have write permissions in %s." "$ABSROOT"
 	exit 1 # E_CONFIG_ERROR
 fi
 
@@ -138,7 +133,7 @@ if [ "$(type -p csup)" ]; then
 elif [ "$(type -p cvsup)" ]; then
 	CVSUP="cvsup"
 else
-	error "$(gettext "Missing CVS synchronization utility. Install csup or cvsup.")"
+	error "Missing CVS synchronization utility. Install csup or cvsup."
 	exit 1 # E_MISSING_PROGRAM
 fi
 
@@ -161,7 +156,7 @@ for sup in ${SUPFILES[@]}; do
 			;;
 	esac
 
-	msg "$(gettext "Updating %s...")" "$sup"
+	msg "Updating %s..." "$sup"
 	cd "$workdir"
 	$CVSUP -L 1 -r 0 -g -b "$workdir" -P "$PASSIVE" -c .sup "$CONFDIR/supfile.$sup"
 done
