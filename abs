@@ -27,7 +27,7 @@
 #  E_INVALID_OPTION : User has passed unknown/invalid option to script.
 ##
 
-myver='3.1.0'
+myver='1.0'
 BUG_REPORT_EMAIL='pacman-dev@archlinux.org'
 CONFDIR="/etc/abs"
 PASSIVE='m'
