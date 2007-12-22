@@ -9,12 +9,12 @@ install:
 	install -m 755 abs $(DESTDIR)/usr/bin
 	# install conf files
 	mkdir -p $(CONFDIR)
-	install -m 744 conf/abs.conf $(CONFDIR)
-	install -m 744 conf/supfile.core $(CONFDIR)
-	install -m 744 conf/supfile.extra $(CONFDIR)
-	install -m 744 conf/supfile.unstable $(CONFDIR)
-	install -m 744 conf/supfile.community $(CONFDIR)
-	install -m 744 conf/supfile.testing $(CONFDIR)
+	install -m 644 conf/abs.conf $(CONFDIR)
+	install -m 644 conf/supfile.core $(CONFDIR)
+	install -m 644 conf/supfile.extra $(CONFDIR)
+	install -m 644 conf/supfile.unstable $(CONFDIR)
+	install -m 644 conf/supfile.community $(CONFDIR)
+	install -m 644 conf/supfile.testing $(CONFDIR)
 
 uninstall:
 	rm $(DESTDIR)/usr/bin/abs
