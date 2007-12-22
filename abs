@@ -55,7 +55,7 @@ error() {
 
 
 usage() {
-	printf "abs (pacman) %s - download a PKGBUILD tree from a CVS repository\n\n" "$myver"
+	printf "abs %s - download a PKGBUILD tree from a CVS repository\n\n" "$myver"
 	printf "Usage %s [options] [repository...]\n\n" "$0"
 	printf "Options:\n"
 	printf "  -p, --passive  The connection is opened in passive mode.\n"
@@ -73,7 +73,7 @@ will synchronize from supfiles specified in %s.\n\n" \
 }
 
 version() {
-	printf "abs (pacman) %s\n" "$myver"
+	printf "abs %s\n" "$myver"
 	printf "\
 Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>.\n\n\
 This is free software; see the source for copying conditions.\n\
