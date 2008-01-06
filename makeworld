@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 #   makeworld
-#   Generated from makeworld.in; do not edit by hand.
 #
 #   Copyright (c) 2002-2007 by Judd Vinet <jvinet@zeroflux.org>
 #
@@ -20,15 +19,16 @@
 #
 
 # gettext initialization
+#   (here becuase many strings are shared with makepkg)
 export TEXTDOMAIN='pacman'
 export TEXTDOMAINDIR='/usr/share/locale'
 
-myver="3.1.0"
+myver='1.0'
 BUG_REPORT_EMAIL='pacman-dev@archlinux.org'
 toplevel=$(pwd)
 
 usage() {
-	printf "makeworld (pacman) %s\n" "$myver"
+	printf "makeworld %s\n" "$myver"
 	echo "$(gettext "Usage: %s [options] <destdir> <category> [category] ...")" "$0"
 	echo "$(gettext "Options:")"
 	echo "$(gettext "  -b, --builddeps  Build missing dependencies from source")"
@@ -58,11 +58,11 @@ usage() {
 }
 
 version() {
-	printf "makeworld (pacman) %s\n" "$myver"
-	printf "$(gettext "\
+	printf "makeworld %s\n" "$myver"
+	printf "\
 Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>.\n\n\
 This is free software; see the source for copying conditions.\n\
-There is NO WARRANTY, to the extent permitted by law.\n")"
+There is NO WARRANTY, to the extent permitted by law.\n"
 }
 
 MAKEPKG_OPTS=
