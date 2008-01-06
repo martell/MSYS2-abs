@@ -18,43 +18,21 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# gettext initialization
-#   (here becuase many strings are shared with makepkg)
-export TEXTDOMAIN='pacman'
-export TEXTDOMAINDIR='/usr/share/locale'
-
 myver='1.0'
 BUG_REPORT_EMAIL='pacman-dev@archlinux.org'
 toplevel=$(pwd)
 
 usage() {
-	printf "makeworld %s\n" "$myver"
-	echo "$(gettext "Usage: %s [options] <destdir> <category> [category] ...")" "$0"
-	echo "$(gettext "Options:")"
-	echo "$(gettext "  -b, --builddeps  Build missing dependencies from source")"
-	echo "$(gettext "  -B, --noccache   Do not use ccache during build")"
-	echo "$(gettext "  -c, --clean      Clean up work files after build")"
-	echo "$(gettext "  -C, --cleancache Clean up source files from the cache")"
-	echo "$(gettext "  -d, --nodeps     Skip all dependency checks")"
-	echo "$(gettext "  -e, --noextract  Do not extract source files (use existing src/ dir)")"
-	echo "$(gettext "  -f, --force      Overwrite existing packages")"
-	echo "$(gettext "  -i, --install    Install package after successful build")"
-	echo "$(gettext "  -m, --nocolor    Disable colorized output messages")"
-	echo "$(gettext "  -h, --help       This help")"
-	echo "$(gettext "  -o, --nobuild    Download and extract files only")"
-	echo "$(gettext "  -r, --rmdeps     Remove installed dependencies after a successful build")"
-	echo "$(gettext "  -s, --syncdeps   Install missing dependencies with pacman")"
-	echo "$(gettext "  -S, --usesudo    Use sudo when running pacman commands")"
+	printf "makeworld %s - a makepkg wrapper to build multiple packages\n" "$myver"
 	echo
-	echo "$(gettext "These options can be passed to pacman:")"
+	printf "Usage: %s [options] <destdir> <category> [category] ...\n" "$0"
 	echo
-	echo "$(gettext "  --noconfirm      Do not ask for confirmation when resolving dependencies")"
-	echo "$(gettext "  --noprogressbar  Do not show a progress bar when downloading files")"
+	echo "Where <category> is one or more directory names under the ABS root"
+	echo "  eg: makeworld -c /packages base lib editors"
 	echo
-	echo "$(gettext "Where <category> is one or more directory names under the ABS root")"
-	echo "$(gettext "eg: makeworld -c /packages base lib editors")"
+	echo "This should be run from the toplevel directory of ABS (usually /var/abs)"
 	echo
-	echo "$(gettext "This should be run from the toplevel directory of ABS (usually /var/abs)")"
+	echo "See makepkg --help for supported options (passed directly to makepkg)"
 }
 
 version() {
@@ -68,71 +46,30 @@ There is NO WARRANTY, to the extent permitted by law.\n"
 MAKEPKG_OPTS=
 for arg in $*; do
 	case $arg in
-		# pacman
-		--noconfirm)     MAKEPKG_OPTS="$MAKEPKG_OPTS --noconfirm" ;;
-		--noprogressbar) MAKEPKG_OPTS="$MAKEPKG_OPTS --noprogressbar" ;;
-		# makepkg
-		--clean)      MAKEPKG_OPTS="$MAKEPKG_OPTS -c" ;;
-		--install)    MAKEPKG_OPTS="$MAKEPKG_OPTS -i" ;;
-		--syncdeps)   MAKEPKG_OPTS="$MAKEPKG_OPTS -s" ;;
-		--usesudo)    MAKEPKG_OPTS="$MAKEPKG_OPTS -S" ;;
-		--builddeps)  MAKEPKG_OPTS="$MAKEPKG_OPTS -b" ;;
-		--nodeps)     MAKEPKG_OPTS="$MAKEPKG_OPTS -d" ;;
-		--force)      MAKEPKG_OPTS="$MAKEPKG_OPTS -f" ;;
-		--rmdeps)     MAKEPKG_OPTS="$MAKEPKG_OPTS -r" ;;
-		--noccache)   MAKEPKG_OPTS="$MAKEPKG_OPTS -B" ;;
-		--cleancache) MAKEPKG_OPTS="$MAKEPKG_OPTS -C" ;;
-		--noextract)  MAKEPKG_OPTS="$MAKEPKG_OPTS -e" ;;
-		--nobuild)    MAKEPKG_OPTS="$MAKEPKG_OPTS -o" ;;
-		--nocolor)    MAKEPKG_OPTS="$MAKEPKG_OPTS -m" ;;
 		--help)
-			usage
-			exit 0
-			;;
+			usage; exit 0 ;;
 		--version)
-			version
-			exit 0
-			;;
+			version; exit 0 ;;
 		--*)
-			usage
-			exit 1
-			;;
+			# pass anything except --help or --version to makepkg,
+			#   and let it error out later if it was invalid
+			MAKEPKG_OPTS="$MAKEPKG_OPTS $arg" ;;
 		-*)
 			while getopts "chisSbdfrBCemoSV-" opt; do
 				case $opt in
-					c) MAKEPKG_OPTS="$MAKEPKG_OPTS -c" ;;
-					i) MAKEPKG_OPTS="$MAKEPKG_OPTS -i" ;;
-					s) MAKEPKG_OPTS="$MAKEPKG_OPTS -s" ;;
-					b) MAKEPKG_OPTS="$MAKEPKG_OPTS -b" ;;
-					d) MAKEPKG_OPTS="$MAKEPKG_OPTS -d" ;;
-					f) MAKEPKG_OPTS="$MAKEPKG_OPTS -f" ;;
-					r) MAKEPKG_OPTS="$MAKEPKG_OPTS -r" ;;
-					B) MAKEPKG_OPTS="$MAKEPKG_OPTS -B" ;;
-					C) MAKEPKG_OPTS="$MAKEPKG_OPTS -C" ;;
-					e) MAKEPKG_OPTS="$MAKEPKG_OPTS -e" ;;
-					m) MAKEPKG_OPTS="$MAKEPKG_OPTS -m" ;;
-					o) MAKEPKG_OPTS="$MAKEPKG_OPTS -o" ;;
-					S) MAKEPKG_OPTS="$MAKEPKG_OPTS -S" ;;
 					h)
-						usage
-						exit 0
-						;;
+						usage; exit 0 ;;
 					V)
-						version
-						exit 0
-						;;
+						version; exit 0 ;;
 					-)
-						OPTIND=0
-						break
-						;;
+						OPTIND=0; break ;;
+					*)
+						MAKEPKG_OPTS="$MAKEPKG_OPTS -$opt" ;;
 				esac
 			done
 			;;
 		*)
-			dest=$arg
-			shift
-			break
-			;;
+			dest=$arg; shift; break ;;
 	esac
 	shift
 	if [ "$dest" != "" ]; then
@@ -151,6 +88,10 @@ if [ $# -lt 1 ]; then
 fi
 
 # convert a (possibly) relative path to absolute
+if [ ! -d "$dest" ]; then
+	echo "$dest does not exist, creating directory"
+	mkdir "$dest"
+fi
 cd "$dest"
 dest="$(pwd)"
 cd - &>/dev/null

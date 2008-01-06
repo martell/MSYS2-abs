@@ -1,0 +1,9 @@
+abs:
+* change to rsync-based implementation
+
+makeworld:
+* Remove dependency to only build categories
+* Somehow parse options once for correctness (and not copy paste from makepkg)
+* tee build output to screen and to log file (or use makepkg's built in logging)
+* add signal/trap functionality (so C^c actually kills the whole thing and not
+  a single call to makepkg)
