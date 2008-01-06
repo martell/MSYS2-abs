@@ -1,0 +1,60 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# Contributor: Your Name <youremail@domain.com>
+pkgname=NAME
+pkgver=VERSION
+pkgrel=1
+pkgdesc=""
+arch=()
+url=""
+license=('GPL')
+groups=()
+depends=()
+makedepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+source=($pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=() #generate with 'makepkg -g'
+
+_darcstrunk="DARCSURL"
+_darcsmod="MODNAME"
+
+build() {
+  cd $startdir/src/
+
+  msg "Checking for previous build"
+
+  if [[ -d $_darcsmod/_darcs ]]
+  then
+    msg "Retrieving missing patches"
+    cd $_darcsmod
+    darcs pull -a $_darcstrunk/$_darcsmod
+  else
+    msg "Retrieving complete sources"
+    darcs get --partial --set-scripts-executable $_darcstrunk/$_darcsmod
+    cd $_darcsmod
+  fi
+
+  rm -r $startdir/src/$_darcsmod-build
+  cp -r $startdir/src/$_darcsmod $startdir/src/$_darcsmod-build
+  cd $startdir/src/$_darcsmod-build
+
+  msg "Starting build"
+
+  #
+  # BUILD
+  #
+
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make || return 1
+  make DESTDIR=$startdir/pkg/ install
+}
