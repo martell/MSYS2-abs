@@ -1,5 +1,6 @@
 BUILDDIR = build
 CONFDIR = $(DESTDIR)/etc/abs
+PROTOTYPEDIR = $(DESTDIR)/usr/share/pacman/
 
 all:
 
@@ -16,6 +17,13 @@ install:
 	install -m 644 conf/supfile.unstable $(CONFDIR)
 	install -m 644 conf/supfile.community $(CONFDIR)
 	install -m 644 conf/supfile.testing $(CONFDIR)
+	# install prototype files
+	mkdir -p $(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-cvs.proto $(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-darcs.proto $(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-git.proto $(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-svn.proto $(PROTOTYPEDIR)
+	install -m 644 prototypes/rc-script.proto $(PROTOTYPEDIR)
 
 uninstall:
 	rm $(DESTDIR)/usr/bin/abs
@@ -26,6 +34,11 @@ uninstall:
 	rm $(CONFDIR)/supfile.unstable
 	rm $(CONFDIR)/supfile.community
 	rm $(CONFDIR)/supfile.testing
+	rm $(PROTOTYPEDIR)/PKGBUILD-cvs.proto
+	rm $(PROTOTYPEDIR)/PKGBUILD-darcs.proto
+	rm $(PROTOTYPEDIR)/PKGBUILD-git.proto
+	rm $(PROTOTYPEDIR)/PKGBUILD-svn.proto
+	rm $(PROTOTYPEDIR)/rc-script.proto
 
 zip:
 	mkdir -p $(BUILDDIR)/abs
@@ -33,6 +46,7 @@ zip:
 	cp abs $(BUILDDIR)/abs/
 	cp makeworld $(BUILDDIR)/abs/
 	cp -R conf $(BUILDDIR)/abs/
+	cp -R prototypes $(BUILDDIR)/abs/
 	cd $(BUILDDIR) && tar czf abs.tar.gz "abs/"
 	mv $(BUILDDIR)/abs.tar.gz .
 	rm -rf $(BUILDDIR)
