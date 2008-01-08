@@ -45,6 +45,8 @@ zip:
 	cp Makefile $(BUILDDIR)/abs/
 	cp abs $(BUILDDIR)/abs/
 	cp makeworld $(BUILDDIR)/abs/
+	cp README $(BUILDDIR)/abs/
+	cp COPYING $(BUILDDIR)/abs/
 	cp -R conf $(BUILDDIR)/abs/
 	cp -R prototypes $(BUILDDIR)/abs/
 	cd $(BUILDDIR) && tar czf abs.tar.gz "abs/"
