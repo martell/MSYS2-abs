@@ -1,44 +1,42 @@
+ABS_VERSION=1.9
 BUILDDIR = build
-CONFDIR = $(DESTDIR)/etc/abs
-PROTOTYPEDIR = $(DESTDIR)/usr/share/pacman/
+BINDIR = /usr/bin/
+CONFDIR = /etc/abs/
+PROTOTYPEDIR = /usr/share/pacman/
+DESTDIR =
 
-all:
+all: config_abs
+
+config_abs: 
+	sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
+	       -e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
+				 abs
 
 install:
 	# install the scripts
-	mkdir -p $(DESTDIR)/usr/bin
-	install -m 755 abs $(DESTDIR)/usr/bin
-	install -m 755 makeworld $(DESTDIR)/usr/bin
+	mkdir -p $(DESTDIR)$(BINDIR)
+	install -m 755 abs $(DESTDIR)$(BINDIR)
+	install -m 755 makeworld $(DESTDIR)$(BINDIR)
 	# install conf files
-	mkdir -p $(CONFDIR)
-	install -m 644 conf/abs.conf $(CONFDIR)
-	install -m 644 conf/supfile.core $(CONFDIR)
-	install -m 644 conf/supfile.extra $(CONFDIR)
-	install -m 644 conf/supfile.unstable $(CONFDIR)
-	install -m 644 conf/supfile.community $(CONFDIR)
-	install -m 644 conf/supfile.testing $(CONFDIR)
+	mkdir -p $(DESTDIR)$(CONFDIR)
+	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
 	# install prototype files
-	mkdir -p $(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-cvs.proto $(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-darcs.proto $(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-git.proto $(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-svn.proto $(PROTOTYPEDIR)
-	install -m 644 prototypes/rc-script.proto $(PROTOTYPEDIR)
+	mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-darcs.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-git.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-svn.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/rc-script.proto $(DESTDIR)$(PROTOTYPEDIR)
 
 uninstall:
-	rm $(DESTDIR)/usr/bin/abs
-	rm $(DESTDIR)/usr/bin/makeworld
-	rm $(CONFDIR)/abs.conf
-	rm $(CONFDIR)/supfile.core
-	rm $(CONFDIR)/supfile.extra
-	rm $(CONFDIR)/supfile.unstable
-	rm $(CONFDIR)/supfile.community
-	rm $(CONFDIR)/supfile.testing
-	rm $(PROTOTYPEDIR)/PKGBUILD-cvs.proto
-	rm $(PROTOTYPEDIR)/PKGBUILD-darcs.proto
-	rm $(PROTOTYPEDIR)/PKGBUILD-git.proto
-	rm $(PROTOTYPEDIR)/PKGBUILD-svn.proto
-	rm $(PROTOTYPEDIR)/rc-script.proto
+	rm $(DESTDIR)$(BINDIR)/abs
+	rm $(DESTDIR)$(BINDIR)/makeworld
+	rm $(DESTDIR)$(CONFDIR)/abs.conf
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-cvs.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-darcs.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-svn.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/rc-script.proto
 
 zip:
 	mkdir -p $(BUILDDIR)/abs
@@ -49,6 +47,6 @@ zip:
 	cp COPYING $(BUILDDIR)/abs/
 	cp -R conf $(BUILDDIR)/abs/
 	cp -R prototypes $(BUILDDIR)/abs/
-	cd $(BUILDDIR) && tar czf abs.tar.gz "abs/"
-	mv $(BUILDDIR)/abs.tar.gz .
+	cd $(BUILDDIR) && tar czf abs-$(ABS_VERSION).tar.gz "abs/"
+	mv $(BUILDDIR)/abs-$(ABS_VERSION).tar.gz .
 	rm -rf $(BUILDDIR)

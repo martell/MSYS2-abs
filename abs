@@ -19,6 +19,14 @@
 #
 
 ##
+# Constants
+##
+ABS_VERSION="%%ABS_VERSION%%"
+CONFDIR="%%CONF_DIR%%"
+SYNCCMD='rsync -mrtv --no-motd'
+BUG_REPORT_EMAIL=pacman-dev@archlinux.org
+
+##
 # Script Exit Reasons
 # -------------------
 #              E_OK : Everything worked :)
@@ -26,23 +34,14 @@
 #    E_CONFIG_ERROR : Missing/incorrect configuration.
 #  E_INVALID_OPTION : User has passed unknown/invalid option to script.
 ##
+_E_OK=0
+_E_MISSING_PROGRAM=1
+_E_CONFIG_ERROR=2
+_E_INVALID_OPTION=3
 
-myver='1.0'
-BUG_REPORT_EMAIL='pacman-dev@archlinux.org'
-CONFDIR="/etc/abs"
-PASSIVE='m'
-
-# Source config files
-if [ -r "$CONFDIR/abs.conf" ]; then
-	source "$CONFDIR/abs.conf"
-fi
-
-# User based overrides
-if [ -r ~/.abs.conf ]; then
-	source ~/.abs.conf
-fi
-
-
+##
+# Consistent messaging format
+##
 msg() {
 	local mesg=$1; shift
 	printf "==> ${mesg}\n" "$@" >&2
@@ -53,33 +52,61 @@ error() {
 	printf  "==> ERROR: ${mesg}\n" "$@" >&2
 }
 
+##
+# Source configuration
+##
+if [ -f "$CONFDIR/abs.conf" ]; then
+	source "$CONFDIR/abs.conf"
+else
+	error "Could not find configuration file $CONFDIR/abs.conf"
+	exit $_E_CONFIG_ERROR
+fi
 
+##
+# User based overrides
+##
+[ -f ~/.abs.conf ] && source ~/.abs.conf
+
+##
+# Helper functions
+##
 usage() {
-	printf "abs %s - download a PKGBUILD tree from a CVS repository\n\n" "$myver"
-	printf "Usage %s [options] [repository...]\n\n" "$0"
-	printf "Options:\n"
-	printf "  -p, --passive  The connection is opened in passive mode.\n"
+	echo "Arch Build System $ABS_VERSION -- synchronization utility"
+	echo "usage: $0 [options] [repository1 [repository2 ...]]"
 	echo
-	printf "  -h, --help     Display this help message then exit.\n"
-	printf "  -V, --version  Display version information then exit.\n"
+	echo "Options:"
+	echo "  -h, --help     Display this help message then exit."
+	echo "  -V, --version  Display version information then exit."
 	echo
-	printf "\
-abs will synchronize build scripts from the CVS repository\n\
-into %s. You can follow different package trees by\n\
-editing %s files. If no argument is given, abs\n\
-will synchronize from supfiles specified in %s.\n\n" \
-		"$ABSROOT" "$CONFDIR/supfile.*" "$CONFDIR/abs.conf"
-	printf "Report bugs to <%s>.\n" "$BUG_REPORT_EMAIL"
+	echo "abs will synchronize PKGBUILD scripts from the Arch Linux"
+	echo "repository into $ABSROOT via rsync. If no argument is given, abs"
+	echo "will synchronize the repositories specified in $CONFDIR/abs.conf."
+	echo
+	echo "Report bugs to $BUG_REPORT_EMAIL with [ABS] in the subject"
 }
 
 version() {
-	printf "abs %s\n" "$myver"
-	printf "\
-Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>.\n\n\
-This is free software; see the source for copying conditions.\n\
-There is NO WARRANTY, to the extent permitted by law.\n"
+	echo "abs $ABS_VERSION"
+	echo
+	echo "Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>."
+	echo
+	echo "This is free software; see the source for copying conditions."
+  echo "There is NO WARRANTY, to the extent permitted by law."
 }
 
+update() {
+	cd "$ABSROOT"
+
+	EXCLUDE="--exclude='/local/**'"
+	for repo in "${REPOS[@]}"; do
+		if [ "$repo" = "${repo#!}" ]; then
+			$EXCLUDE="${EXCLUDE} --exclude='/${repo}/**'"
+		fi
+	done
+
+	msg "Starting ABS sync..."
+	$SYNCCMD $EXCLUDE --delete-after cvs.archlinux.org::abs/${ARCH}/ $ABSROOT
+} 
 
 ##
 # Signal Traps
@@ -88,79 +115,57 @@ trap 'error "TERM signal caught. Exiting..."; exit 1' TERM HUP QUIT
 trap 'error "Aborted by user! Exiting..."; exit 1' INT
 trap 'error "An unknown error has occured. Exiting..."; exit 1' ERR
 
-
-# Parse Command Line Options.
-OPT_SHORT="hpV"
-OPT_LONG="help,passive,version"
+##
+# Parse Options
+##
+OPT_SHORT="hV"
+OPT_LONG="help,version"
 OPT_TEMP="$(getopt -o "$OPT_SHORT" -l "$OPT_LONG" -n "$(basename "$0")" -- "$@" || echo 'GETOPT GO BANG!')"
 if echo "$OPT_TEMP" | grep -q 'GETOPT GO BANG!'; then
 	# This is a small hack to stop the script bailing with 'set -e'
-	echo; usage; exit 1 # E_INVALID_OPTION;
+	echo; usage; exit $_E_INVALID_OPTION;
 fi
 eval set -- "$OPT_TEMP"
 unset OPT_SHORT OPT_LONG OPT_TEMP
 
 while true; do
 	case "$1" in
-		-p|--passive)  PASSIVE='-';;
-
-		-h|--help)     usage; exit 0;; # E_OK
-		-V|--version)  version; exit 0;; # E_OK
+		-h|--help)     usage; exit $_E_OK;;
+		-V|--version)  version; exit $_E_OK;;
 
 		--)            OPT_IND=0; shift; break;;
-		*)             usage; exit 1;; # E_INVALID_OPTION
+		*)             usage; exit $_E_INVALID_OPTION;; 
 	esac
 	shift
 done
 
-if [ $# -gt 0 ]; then
-	SUPFILES=("$@")
+if [ "$#" -gt "0" ]; then
+	REPOS=("$@")
 fi
 
-
-# Check permissions and programs.
+## 
+# Verify Config
+##
 if [ ! -d "$ABSROOT" ]; then
-	error "%s does not exist or is not a directory." "$ABSROOT"
-	exit 1 # E_CONFIG_ERROR
-elif [ ! -w "$ABSROOT" ]; then
-	error "You do not have write permissions in %s." "$ABSROOT"
-	exit 1 # E_CONFIG_ERROR
+	error "$ABSROOT does not exist (or is not a directory)"
+	exit $_E_CONFIG_ERROR
 fi
 
-
-if [ "$(type -p csup)" ]; then
-	CVSUP="csup"
-elif [ "$(type -p cvsup)" ]; then
-	CVSUP="cvsup"
-else
-	error "Missing CVS synchronization utility. Install csup or cvsup."
-	exit 1 # E_MISSING_PROGRAM
+if [ ! -w "$ABSROOT" ]; then
+	error "no write permissions in $ABSROOT"
+	exit $_E_CONFIG_ERROR 
 fi
 
+if [ ! "$(type -p rsync)" ]; then
+	error "missing rsync synchronization utility.  Install rsync."
+	exit $_E_MISSING_PROGRAM
+fi
 
-# Begin script.
-for sup in ${SUPFILES[@]}; do
-	case "$sup" in
-		testing)
-			if [ ! -d "$ABSROOT/$sup" ]; then
-				mkdir "$ABSROOT/$sup"
-			fi
-			workdir="$ABSROOT/$sup"
-			;;
+##
+# Go-go Update ABS tree!
+##
+update
 
-		*)
-			if [ "$sup" != "${sup#!}" ]; then
-				continue
-			fi
-			workdir="$ABSROOT"
-			;;
-	esac
-
-	msg "Updating %s..." "$sup"
-	cd "$workdir"
-	$CVSUP -L 1 -r 0 -g -b "$workdir" -P "$PASSIVE" -c .sup "$CONFDIR/supfile.$sup"
-done
-
-exit 0 # E_OK
+exit $_E_OK
 
 # vim: set ts=2 sw=2 noet:
