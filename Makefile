@@ -21,7 +21,7 @@ install:
 	# install conf files
 	mkdir -p $(DESTDIR)$(CONFDIR)
 	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
-	install -m 644 conf/rsync.conf.abs $(DESTDIR)$(CONFDIR)
+	install -m 644 conf/rsyncd.conf.abs $(DESTDIR)$(CONFDIR)
 	# install prototype files
 	mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
@@ -34,7 +34,7 @@ uninstall:
 	rm $(DESTDIR)$(BINDIR)/abs
 	rm $(DESTDIR)$(BINDIR)/makeworld
 	rm $(DESTDIR)$(CONFDIR)/abs.conf
-	rm $(DESTDIR)$(CONFDIR)/rsync.conf.abs
+	rm $(DESTDIR)$(CONFDIR)/rsyncd.conf.abs
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-cvs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-darcs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
