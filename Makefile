@@ -10,7 +10,7 @@ all: config_abs
 config_abs: 
 	sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
 	       -e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
-				 abs
+				 abs makeworld svn2abs
 
 install:
 	# install the scripts

@@ -1,0 +1,174 @@
+#!/bin/bash
+
+########################
+#  Constants
+########################
+ABS_VERSION="%%ABS_VERSION%%"
+CHECKOUT_DIR=/tmp/abs-svn-checkout
+TREE_DIR=/tmp/abs-tree
+ABS_DIR=/srv/abs
+SVN_REPO_LOCATION=file:///home/svn-packages
+
+function usage()
+{
+  echo "Usage: $0"
+  echo 
+  echo "Takes svn repo structure of form \$pkgname/repos/\$repo-\$arch"
+  echo "and converts it to the ABS structure of \$arch/\$repo/\$pkgname"
+  echo "then syncs ABS tree in $ABS_DIR with extracted structure."
+  echo
+  echo "Uses svn checkout from $CHECKOUT_DIR"
+  echo "And stores temp converted ABS tree in $TREE_DIR"
+}
+
+version() {
+	echo "svn2abs $ABS_VERSION"
+	echo
+	echo "Copyright (C) 2008 Aaron Griffin <aaron@archlinux.org>."
+	echo
+	echo "This is free software; see the source for copying conditions."
+  echo "There is NO WARRANTY, to the extent permitted by law."
+}
+
+
+# Checkout the svn repo of our pkgbuilds
+#
+# Args: #1 location to store the checkout (can be temp location or permanent)
+function checkout_svn()
+{
+  local targetdir=$1
+  local origdir=$(pwd)
+
+  if [ -f "$targetdir" ]; then
+    echo "Could not create checkout target $targetdir. File exists."
+    return 1
+  fi
+
+  if [ ! -d "$targetdir" ]; then
+    mkdir "$targetdir"
+  fi
+
+  cd "$targetdir" 
+
+  # Simple check - if $targetdir/.svn exists, then we can assume
+  # the repo has been checked out (ie. we can just run an update 
+  # instead of a full checkout)
+  if [ -d "./.svn" ]; then
+    # Checkout already exists - just update it
+    echo "Updating SVN repo..."
+    svn update 
+  else
+    # Checkout the tree into $targetdir
+    echo "Checking out SVN repo..."
+    svn co "$SVN_REPO_LOCATION" ./
+  fi
+
+  if [ "$?" != "0" ]; then
+    cd "$origdir"
+    echo "Error with SVN checkout/update."
+    return 1
+  fi
+
+  echo "SVN checkout/update complete."
+
+  cd "$origdir"
+  return 0
+}
+
+# Extract the abs tree of the form $arch/$repo/$pkg
+# from a svn checkout with structure $pkgname/repos/$repo-$arch
+#
+# Args: #1 location of svn checkout
+#       #2 location to store extracted abs tree
+function extract_abs_tree()
+{
+  local arch
+  local repo
+  local targetdir="$2"
+  local checkoutdir="$1"
+  local origdir=$(pwd)
+
+  if [ ! -d "$checkoutdir" ]; then
+    echo "SVN checkout dir $checkoutdir does not exist"
+    return 1
+  fi
+
+  if [ -f "$targetdir" ]; then
+    echo "Could not create abs tree target $targetdir. File exists."
+    return 1
+  fi
+
+  if [ ! -d "$targetdir" ]; then
+    mkdir "$targetdir"
+  else
+    # Clear out target dir
+    rm -r "$targetdir/*"
+  fi
+
+  cd "$targetdir"
+  local targetdir="$(pwd)"
+  cd -
+
+  cd "$checkoutdir"
+
+  for pkg in *; do
+    # It seems that some repos directories have no tags in them...
+    if [ -d "$pkg" -a -d "$pkg/repos" ]; then
+
+      echo "Creating ABS tree for package $pkg"
+      cd $pkg/repos @>/dev/null
+
+      for repo in $(ls); do
+        arch=$(echo $repo | sed "s/.*-\(.*\)/\1/")
+        dest_repo=$(echo $repo | sed "s/\(.*\)-.*/\1/")
+        mkdir -p $targetdir/$arch/$dest_repo/$pkg
+        cp -r $repo/* $targetdir/$arch/$dest_repo/$pkg
+      done
+
+      cd ../../
+    fi
+
+  done
+
+  # Get rid of .svn metadata
+  find "$targetdir" -name .svn -exec rm {} \;
+
+  cd "$origdir"
+  return 0
+}
+
+#######################
+# Simple params
+#######################
+
+if [ "$1" = "-h" -o "$1" = "--help" ]; then
+  usage
+  exit 0
+fi
+
+if [ "$1" = "-v" -o "$1" = "--version" ]; then
+  version
+  exit 0
+fi
+
+#######################
+# BEGIN!
+#######################
+
+checkout_svn "$CHECKOUT_DIR" || exit 1
+
+extract_abs_tree "$CHECKOUT_DIR" "$TREE_DIR"
+if [ "$?" -ne "0" ]; then
+  echo "Error occurred extracting the abs tree."
+  exit 1
+fi
+
+echo "Synchronizing $TREE_DIR to abs tree in $ABS_DIR"
+
+cd $TREE_DIR
+
+for arch in $(ls); do
+  rsync -mrt --delete-after "$arch" "$ABS_DIR"
+done
+
+cd -
