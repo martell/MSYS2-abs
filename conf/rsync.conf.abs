@@ -1,0 +1,13 @@
+# Sample rsync.conf stanza for abs
+# Copy (on the server) to /etc/rsync.conf and make
+# the necessary changes for your setup
+[abs]
+    path = /home/abs/rsync
+    comment = ABS rsync
+    list = false
+    exclude = CVS .svn
+    hosts allow = *
+    read only = true
+    refuse options = c compress
+    dont compress = *
+
