@@ -18,17 +18,24 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-myver='1.0'
+ABS_VERSION="%%ABS_VERSION%%"
 BUG_REPORT_EMAIL='pacman-dev@archlinux.org'
 toplevel=$(pwd)
+
+##
+# Signal Traps
+##
+trap 'error "TERM signal caught. Exiting..."; exit 1' TERM HUP QUIT
+trap 'error "Aborted by user! Exiting..."; exit 1' INT
+trap 'error "An unknown error has occured. Exiting..."; exit 1' ERR
 
 usage() {
 	printf "makeworld %s - a makepkg wrapper to build multiple packages\n" "$myver"
 	echo
-	printf "Usage: %s [options] <destdir> <category> [category] ...\n" "$0"
+	printf "Usage: %s [options] <destdir> <repo> [repo] ...\n" "$0"
 	echo
-	echo "Where <category> is one or more directory names under the ABS root"
-	echo "  eg: makeworld -c /packages base lib editors"
+	echo "Where <repo> is one or more directory names under the ABS root"
+	echo "  eg: makeworld -c /packages core extra"
 	echo
 	echo "This should be run from the toplevel directory of ABS (usually /var/abs)"
 	echo
@@ -38,10 +45,25 @@ usage() {
 version() {
 	printf "makeworld %s\n" "$myver"
 	printf "\
-Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>.\n\n\
+Copyright (C) 2002-2008 Judd Vinet <jvinet@zeroflux.org>.\n\n\
 This is free software; see the source for copying conditions.\n\
 There is NO WARRANTY, to the extent permitted by law.\n"
 }
+
+# Source makepkg.conf; fail if it is not found (need this for $CARCH)
+if [ -r "/etc/makepkg.conf" ]; then
+	source "/etc/makepkg.conf"
+else
+	printf "%s not found" "/etc/makepkg.conf"
+	echo "Aborting..."
+	exit 1
+fi
+
+# Source user-specific makepkg.conf overrides
+if [ -r ~/.makepkg.conf ]; then
+	source ~/.makepkg.conf
+fi
+
 
 MAKEPKG_OPTS=
 for arg in $*; do
@@ -98,20 +120,27 @@ cd - &>/dev/null
 
 sd=$(date +"[%b %d %H:%M]")
 
-for category in $*; do
-	for port in $(find "$toplevel/$category" -maxdepth 1 -mindepth 1 -type d | sort); do
+for repo in $*; do
+	for port in $(find "$toplevel/$repo" -maxdepth 1 -mindepth 1 -type d | sort); do
 		cd $port
 		if [ -f PKGBUILD ]; then
 			. PKGBUILD
 			buildstatus=0
-			if [ ! -f "$dest/$pkgname-$pkgver-$pkgrel.pkg.tar.gz" ]; then
-				PKGDEST="$dest" makepkg $MAKEPKG_OPTS -m 2>>$toplevel/makepkg.log
-				if [ $? -gt 0 ]; then
+			if [ ! -f "$dest/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.gz" ]; then
+
+				PKGDEST="$dest" makepkg $MAKEPKG_OPTS -m 2>&1 1>&2 | tee -a $toplevel/makepkg.log
+
+				#Tee screws up the reading of $? - just check for the completed
+				#package instead
+				#if [ $? -gt 0 ]; then 
+				if [ ! -f "$dest/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.gz" ]; then
 					buildstatus=2
 				else
 					buildstatus=1
 				fi
+
 			fi
+
 			d=$(date +"[%b %d %H:%M]")
 			echo -n "$d  " >>$toplevel/build.log
 			case $buildstatus in
