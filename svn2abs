@@ -1,24 +1,39 @@
 #!/bin/bash
 
-########################
-#  Constants
-########################
+##
+# Constants
+##
 ABS_VERSION="%%ABS_VERSION%%"
-CHECKOUT_DIR=/tmp/abs-svn-checkout
-TREE_DIR=/tmp/abs-tree
-ABS_DIR=/srv/abs
+# Location of the SVN repo with PKGBUILDs
 SVN_REPO_LOCATION=file:///home/svn-packages
+# Directory to checkout svn into
+CHECKOUT_DIR=/home/abs/checkout
+# Directory to store the extracted ABS tree
+TREE_DIR=/tmp/abs-tree
+# Directory where the rsync-able ABS tree is stored
+ABS_DIR=/home/abs/rsync
+
 
 function usage()
 {
-  echo "Usage: $0"
+  echo "Usage: $0 [svn checkout dir] [abs dir] [svn repo location]"
+  echo "       $0 (-v | --version)"
+  echo "       $0 (-h | --help)"
   echo 
   echo "Takes svn repo structure of form \$pkgname/repos/\$repo-\$arch"
   echo "and converts it to the ABS structure of \$arch/\$repo/\$pkgname"
   echo "then syncs ABS tree in $ABS_DIR with extracted structure."
   echo
-  echo "Uses svn checkout from $CHECKOUT_DIR"
-  echo "And stores temp converted ABS tree in $TREE_DIR"
+  echo "Options:"
+  echo "   -h | --help - show this message"
+  echo "   -v | --version - show version information"
+  echo
+  echo "Parameters:"
+  echo "   [svn checkout dir] - dir to store svn checkout. Defaults to"
+  echo "                        $CHECKOUT_DIR"
+  echo "   [abs dir] - dir containing abs tree to update. Defaults to"
+  echo "               $ABS_DIR"
+  echo "   [svn repo location] - URL to subversion repo containing PKGBUILDs"
 }
 
 version() {
@@ -137,10 +152,9 @@ function extract_abs_tree()
   return 0
 }
 
-#######################
+##
 # Simple params
-#######################
-
+##
 if [ "$1" = "-h" -o "$1" = "--help" ]; then
   usage
   exit 0
@@ -151,10 +165,32 @@ if [ "$1" = "-v" -o "$1" = "--version" ]; then
   exit 0
 fi
 
-#######################
-# BEGIN!
-#######################
+if [ "$1" != "" ]; then
+  CHECKOUT_DIR=$1
+fi
 
+if [ "$2" != "" ]; then
+  ABS_DIR=$2
+fi
+
+if [ "$3" != "" ]; then
+  SVN_REPO_LOCATION=$3
+fi
+  
+##
+# Check config
+##
+if [ "$ABS_DIR" = "" ]; then
+  echo "No ABS_DIR specified!"
+  exit 1
+elif [ ! -d "$ABS_DIR" ]; then
+  echo "ABS_DIR not a directory."
+  exit 1
+fi
+
+##
+# BEGIN!
+##
 checkout_svn "$CHECKOUT_DIR" || exit 1
 
 extract_abs_tree "$CHECKOUT_DIR" "$TREE_DIR"
