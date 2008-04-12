@@ -1,5 +1,5 @@
 # Sample rsync.conf stanza for abs
-# Copy (on the server) to /etc/rsync.conf and make
+# Copy (on the server) to /etc/rsyncd.conf and make
 # the necessary changes for your setup
 [abs]
     path = /home/abs/rsync
