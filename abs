@@ -108,7 +108,7 @@ update() {
 	done
 
 	msg "Starting ABS sync..."
-	$SYNCCMD $SYNCARGS $EXCLUDE rsync.archlinux.org::abs/${ARCH}/ $ABSROOT
+	$SYNCCMD $SYNCARGS $EXCLUDE ${SYNCSERVER}::abs/${ARCH}/ $ABSROOT
 } 
 
 ##

@@ -2,6 +2,7 @@ ABS_VERSION=2.0
 BUILDDIR = build
 BINDIR = /usr/bin/
 CONFDIR = /etc/abs/
+SHAREDIR = /usr/share/abs/
 PROTOTYPEDIR = /usr/share/pacman/
 DESTDIR =
 
@@ -21,7 +22,9 @@ install:
 	# install conf files
 	mkdir -p $(DESTDIR)$(CONFDIR)
 	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
-	install -m 644 conf/rsyncd.conf.abs $(DESTDIR)$(CONFDIR)
+	# install /usr/share files
+	mkdir -p $(DESTDIR)$(SHAREDIR)
+	install -m 644 conf/rsyncd.conf.abs $(DESTDIR)$(SHAREDIR)
 	# install prototype files
 	mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
