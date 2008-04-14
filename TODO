@@ -1,4 +1,5 @@
 abs:
+* support multiple arches, or find a way to roll 'any' into current arch
 
 makeworld:
 * Somehow parse options once for correctness (and not copy paste from makepkg)
