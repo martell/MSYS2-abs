@@ -209,7 +209,7 @@ cd -
 echo "Synchronizing $TREE_DIR to abs tree in $ABS_DIR"
 cd $TREE_DIR
 for abs_arch in $(ls); do
-	rsync -mrt --delete-after "$abs_arch" "$ABS_DIR"
+	rsync -mrtc --delete-after "$abs_arch" "$ABS_DIR"
 done
 cd -
 
