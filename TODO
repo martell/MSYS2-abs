@@ -2,6 +2,8 @@ abs:
 * support multiple arches, or find a way to roll 'any' into current arch
 
 makeworld:
+* Use a separate build dir (other than /var/abs/$repo/$pkg) so that this can
+  realistically be used as a non-root user
 * Somehow parse options once for correctness (and not copy paste from makepkg)
 * tee build output to screen and to log file (or use makepkg's built in logging)
 
