@@ -3,8 +3,11 @@
 # NOTE: Please fill out the license field for your package! If it is unknown,
 # then please put 'unknown'.
 
+# See http://wiki.archlinux.org/index.php/Arch_CVS_&_SVN_PKGBUILD_guidelines
+# for more information on packaging from SVN sources.
+
 # Contributor: Your Name <youremail@domain.com>
-pkgname=NAME
+pkgname=NAME-svn
 pkgver=VERSION
 pkgrel=1
 pkgdesc=""
@@ -28,7 +31,7 @@ _svntrunk=SVNURL
 _svnmod=MODENAME
 
 build() {
-  cd $startdir/src
+  cd "$srcdir"
 
   if [ -d $_svnmod/.svn ]; then
     (cd $_svnmod && svn up -r $pkgver)
@@ -39,9 +42,9 @@ build() {
   msg "SVN checkout done or server timeout"
   msg "Starting make..."
 
-  rm -r $startdir/src/$_svnmod-build
-  cp -r $_svnmod $_svnmod-build
-  cd $_svnmod-build
+  rm -r "$srcdir/$_svnmod-build"
+  cp -r "$srcdir/$_svnmod" "$srcdir/$_svnmod-build"
+  cd "$srcdir/$_svnmod-build"
 
   #
   # BUILD
@@ -49,5 +52,5 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr
   make || return 1
-  make DESTDIR=$startdir/pkg/ install
+  make DESTDIR="$pkgdir/" install
 }

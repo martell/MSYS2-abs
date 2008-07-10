@@ -3,8 +3,11 @@
 # NOTE: Please fill out the license field for your package! If it is unknown,
 # then please put 'unknown'.
 
+# See http://wiki.archlinux.org/index.php/Arch_CVS_&_SVN_PKGBUILD_guidelines
+# for more information on packaging from CVS sources.
+
 # Contributor: Your Name <youremail@domain.com>
-pkgname=NAME
+pkgname=NAME-cvs
 pkgver=VERSION
 pkgrel=1
 pkgdesc=""
@@ -28,7 +31,7 @@ _cvsroot="CVSROOT"
 _cvsmod="MODNAME"
 
 build() {
-  cd $startdir/src
+  cd "$srcdir"
   msg "Connecting to $_cvsmod.sourceforge.net CVS server...."
   if [ -d $_cvsmod/CVS ]; then
     cd $_cvsmod
@@ -41,9 +44,9 @@ build() {
   msg "CVS checkout done or server timeout"
   msg "Starting make..."
 
-  rm -r $startdir/src/$_cvsmod-build
-  cp -r ../$_cvsmod ../$_cvsmod-build
-  cd ../$_cvsmod-build
+  rm -r "$srcdir/$_cvsmod-build"
+  cp -r "$srcdir/$_cvsmod" "$srcdir/$_cvsmod-build"
+  cd "$srcdir/$_cvsmod-build"
 
 
   #
@@ -53,5 +56,5 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr
   make || return 1
-  make DESTDIR=$startdir/pkg install || return 1
+  make DESTDIR="$pkgdir/" install || return 1
 }

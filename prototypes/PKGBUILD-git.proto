@@ -3,6 +3,9 @@
 # NOTE: Please fill out the license field for your package! If it is unknown,
 # then please put 'unknown'.
 
+# See http://wiki.archlinux.org/index.php/Arch_CVS_&_SVN_PKGBUILD_guidelines
+# for more information on packaging from GIT sources.
+
 # Contributor: Your Name <youremail@domain.com>
 pkgname=NAME-git
 pkgver=VERSION
@@ -28,10 +31,10 @@ _gitroot="GITURL"
 _gitname="MODENAME"
 
 build() {
-  cd $startdir/src
+  cd "$srcdir"
   msg "Connecting to GIT server...."
 
-  if [ -d $startdir/src/$_gitname ] ; then
+  if [ -d $_gitname ] ; then
     cd $_gitname && git-pull origin
     msg "The local files are updated."
   else
@@ -41,9 +44,9 @@ build() {
   msg "GIT checkout done or server timeout"
   msg "Starting make..."
 
-  rm -r $startdir/src/$_gitname-build
-  cp -r $startdir/src/$_gitname $startdir/src/$_gitname-build
-  cd $startdir/src/$_gitname-build
+  rm -r "$srcdir/$_gitname-build"
+  cp -r "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
 
   #
   # BUILD HERE
@@ -52,5 +55,5 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr
   make || return 1
-  make DESTDIR=$startdir/pkg/ install
+  make DESTDIR="$pkgdir/" install
 } 
