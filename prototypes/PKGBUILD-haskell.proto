@@ -1,0 +1,45 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# See http://wiki.archlinux.org/index.php/Haskell_package_guidelines for more
+# information on Haskell packaging.
+
+# Contributor: Your Name <youremail@domain.com>
+pkgname=NAME
+pkgver=VERSION
+pkgrel=1
+pkgdesc=""
+arch=()
+url="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/***"
+license=('GPL')
+depends=()
+makedepends=('ghc')
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+source=(http://hackage.haskell.org/packages/archive/***/$pkgver/***-$pkgver.tar.gz)
+md5sums=()
+
+build() {
+  cd "$srcdir/***-$pkgver"
+
+  runhaskell Setup configure --prefix=/usr --enable-executable-stripping || return 1
+  runhaskell Setup build || return 1
+  runhaskell Setup copy --destdir="$pkgdir/" || return 1
+
+  #
+  # Setup registration phase for library packages
+  # Also requires an install script. See proto-haskell.install
+  #
+  runhaskell Setup register --gen-script || return 1
+  runhaskell Setup unregister --gen-script || return 1
+  install -Dm744 register.sh "$pkgdir"/usr/share/haskell/$pkgname/register.sh
+  install -m744 unregister.sh "$pkgdir"/usr/share/haskell/$pkgname/unregister.sh
+}
+
+# vim:set ts=2 sw=2 et:
