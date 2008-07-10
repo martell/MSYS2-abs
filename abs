@@ -45,7 +45,7 @@ _E_INVALID_OPTION=3
 ##
 msg() {
 	local mesg=$1; shift
-	printf "==> ${mesg}\n" "$@" >&2
+	printf "==> ${mesg}\n" "$@"
 }
 
 error() {
