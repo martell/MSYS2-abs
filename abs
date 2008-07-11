@@ -24,7 +24,7 @@
 ABS_VERSION="%%ABS_VERSION%%"
 CONFDIR="%%CONF_DIR%%"
 SYNCCMD='rsync'
-SYNCARGS='-mrtv --no-motd --delete-after --delete-excluded'
+SYNCARGS='-mrtv --no-motd --delete-after'
 BUG_REPORT_EMAIL=pacman-dev@archlinux.org
 
 ##
@@ -73,15 +73,17 @@ fi
 ##
 usage() {
 	echo "Arch Build System $ABS_VERSION -- synchronization utility"
-	echo "usage: $0 [options] [repository1 [repository2 ...]]"
+	echo ""
+	echo "Usage:"
+	echo "$0 [options] [repository1[/package1] [repository2[/package2] ...]]"
 	echo
 	echo "Options:"
 	echo "  -h, --help     Display this help message then exit."
 	echo "  -V, --version  Display version information then exit."
 	echo
-	echo "abs will synchronize PKGBUILD scripts from the Arch Linux"
-	echo "repository into $ABSROOT via rsync. If no argument is given, abs"
-	echo "will synchronize the repositories specified in ${CONFDIR}abs.conf."
+	echo "abs will synchronize PKGBUILD scripts from the Arch Linux repositories"
+	echo "into $ABSROOT via rsync. If no argument is given, abs will synchronize"
+	echo "the repositories specified in ${CONFDIR}abs.conf."
 	echo
 	echo "Report bugs to $BUG_REPORT_EMAIL with [ABS] in the subject"
 }
@@ -92,24 +94,41 @@ version() {
 	echo "Copyright (C) 2002-2008 Judd Vinet <jvinet@zeroflux.org>."
 	echo
 	echo "This is free software; see the source for copying conditions."
-  echo "There is NO WARRANTY, to the extent permitted by law."
+	echo "There is NO WARRANTY, to the extent permitted by law."
 }
 
 update() {
 	cd "$ABSROOT"
 
-	EXCLUDE="--filter=P_/local/ --filter=P_/README"
+	if [ "$CLPARAM" = "" ]; then
+		# using repos specified in abs.conf
+		for repo in "${REPOS[@]}"; do
+			if [ "$repo" != "${repo#!}" ]; then
+				EXCLUDE="${EXCLUDE} --filter=-_/${repo#!}/"
+			fi
+		done
 
-	# I want to ensure we only exclude the top-level repo directories
-	for repo in "${REPOS[@]}"; do
-		if [ "$repo" != "${repo#!}" ]; then
-			EXCLUDE="${EXCLUDE} --filter=-_/${repo#!}/"
-		fi
-	done
+		EXCLUDE="${EXCLUDE} --filter=P_/local/ --filter=P_/README"
+		SYNCARGS="${SYNCARGS} --delete-excluded"
+	else
+		# using repos/packages specified on the command line
+		for param in "${REPOS[@]}"; do
+			INCLUDE="${INCLUDE} --include=/${param}"
+			if [ "$param" != "${param/\/}" ]; then
+				repo=${param%/*}
+				INCLUDE="${INCLUDE} --include=/${repo}"
+				EXCLUDE="${EXCLUDE} --exclude=/${repo}/*"
+			fi
+		done
+
+		# remove duplicate values
+		INCLUDE=$(echo $INCLUDE | tr " " "\n" | sort -u | tr "\n" " ")
+		EXCLUDE="${EXCLUDE} --exclude=/*"
+	fi
 
 	msg "Starting ABS sync..."
-	$SYNCCMD $SYNCARGS $EXCLUDE ${SYNCSERVER}::abs/${ARCH}/ $ABSROOT
-} 
+	$SYNCCMD $SYNCARGS $INCLUDE $EXCLUDE ${SYNCSERVER}::abs/${ARCH}/ $ABSROOT
+}
 
 ##
 # Signal Traps
@@ -143,6 +162,7 @@ while true; do
 done
 
 if [ "$#" -gt "0" ]; then
+	CLPARAM=1
 	REPOS=("$@")
 fi
 
