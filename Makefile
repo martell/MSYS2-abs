@@ -31,7 +31,12 @@ install:
 	install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-darcs.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-git.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-gnome.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-haskell.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-perl.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-svn.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/proto-gnome.install $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/proto-haskell.install $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/rc-script.proto $(DESTDIR)$(PROTOTYPEDIR)
 
 uninstall:
@@ -42,7 +47,12 @@ uninstall:
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-cvs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-darcs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-gnome.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-haskell.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-perl.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-svn.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-gnome.install
+	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-haskell.install
 	rm $(DESTDIR)$(PROTOTYPEDIR)/rc-script.proto
 
 zip:
