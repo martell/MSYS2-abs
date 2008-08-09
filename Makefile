@@ -37,6 +37,7 @@ install:
 	install -m 644 prototypes/PKGBUILD-svn.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/proto-gnome.install $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/proto-haskell.install $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/proto-info.install $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/rc-script.proto $(DESTDIR)$(PROTOTYPEDIR)
 
 uninstall:
@@ -53,6 +54,7 @@ uninstall:
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-svn.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-gnome.install
 	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-haskell.install
+	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-info.install
 	rm $(DESTDIR)$(PROTOTYPEDIR)/rc-script.proto
 
 zip:
