@@ -46,7 +46,7 @@ build() {
     cd $_darcsmod
   fi
 
-  rm -r "$srcdir/$_darcsmod-build"
+  rm -rf "$srcdir/$_darcsmod-build"
   cp -r "$srcdir/$_darcsmod" "$srcdir/$_darcsmod-build"
   cd "$srcdir/$_darcsmod-build"
 
