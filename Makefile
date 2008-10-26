@@ -11,15 +11,15 @@ all: config_abs
 config_abs: 
 	sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
 	       -e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
-				 abs makeworld svn2abs community2abs
+			abs makeworld scripts/svn2abs scripts/community2abs
 
 install:
 	# install the scripts
 	mkdir -p $(DESTDIR)$(BINDIR)
 	install -m 755 abs $(DESTDIR)$(BINDIR)
 	install -m 755 makeworld $(DESTDIR)$(BINDIR)
-	install -m 755 svn2abs $(DESTDIR)$(BINDIR)
-	install -m 755 community2abs $(DESTDIR)$(BINDIR)
+	install -m 755 scripts/svn2abs $(DESTDIR)$(BINDIR)
+	install -m 755 scripts/community2abs $(DESTDIR)$(BINDIR)
 	# install conf files
 	mkdir -p $(DESTDIR)$(CONFDIR)
 	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
@@ -62,12 +62,11 @@ zip:
 	cp Makefile $(BUILDDIR)/abs/
 	cp abs $(BUILDDIR)/abs/
 	cp makeworld $(BUILDDIR)/abs/
-	cp svn2abs $(BUILDDIR)/abs/
-	cp community2abs $(BUILDDIR)/abs/
 	cp README $(BUILDDIR)/abs/
 	cp COPYING $(BUILDDIR)/abs/
 	cp -R conf $(BUILDDIR)/abs/
 	cp -R prototypes $(BUILDDIR)/abs/
+	cp -R scripts $(BUILDDIR)/abs/
 	cd $(BUILDDIR) && tar czf abs-$(ABS_VERSION).tar.gz "abs/"
 	mv $(BUILDDIR)/abs-$(ABS_VERSION).tar.gz .
 	rm -rf $(BUILDDIR)
