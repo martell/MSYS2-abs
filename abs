@@ -118,6 +118,14 @@ update() {
 				repo=${param%/*}
 				INCLUDE="${INCLUDE} --include=/${repo}"
 				EXCLUDE="${EXCLUDE} --exclude=/${repo}/*"
+				
+				# temporary while community repo still has package categories 
+				# fixes FS#11582
+				if [ "$repo" != "${repo/\/}" ]; then
+					repo=${repo%/*}
+					INCLUDE="${INCLUDE} --include=/${repo}"
+					EXCLUDE="${EXCLUDE} --exclude=/${repo}/*"
+				fi
 			fi
 		done
 
