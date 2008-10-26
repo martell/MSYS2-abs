@@ -80,6 +80,7 @@ usage() {
 	echo "Options:"
 	echo "  -h, --help     Display this help message then exit."
 	echo "  -V, --version  Display version information then exit."
+	echo "  -t, --tarball  Sync ABS tree using tarballs from your pacman mirror."
 	echo
 	echo "abs will synchronize PKGBUILD scripts from the Arch Linux repositories"
 	echo "into $ABSROOT via rsync. If no argument is given, abs will synchronize"
@@ -97,7 +98,7 @@ version() {
 	echo "There is NO WARRANTY, to the extent permitted by law."
 }
 
-update() {
+update_rsync() {
 	cd "$ABSROOT"
 
 	if [ "$CLPARAM" = "" ]; then
@@ -138,6 +139,48 @@ update() {
 	$SYNCCMD $SYNCARGS $INCLUDE $EXCLUDE ${SYNCSERVER}::abs/${ARCH}/ $ABSROOT
 }
 
+update_tarball() {
+	cd "$ABSROOT"
+
+	if [ ! "$(type -p wget)" ]; then
+		error "missing wget download utility.  Install wget."
+		exit $_E_MISSING_PROGRAM
+	fi
+
+	if [ -f "$MIRRORLIST" ]; then
+		mirrorlist=$(grep "^Server" $MIRRORLIST | cut -f3 -d" ")
+	else
+		error "Could not find pacman mirrorlist file $MIRRORLIST"
+		exit $_E_CONFIG_ERROR
+	fi
+
+	msg "Downloading tarballs..."
+	for repo in "${REPOS[@]}"; do
+		if [ "$repo" == "${repo#!}" ]; then
+			echo "    ==> ${repo}..."
+
+			ret=0
+			for mirror in ${mirrorlist[@]}; do
+				tarball=$(echo $mirror | sed "s#\$repo#$repo#")
+				tarball="${tarball}/${repo}.abs.tar.gz"
+				wget -q $tarball || ret=$?
+				if [ $ret -eq 0 ]; then
+					break
+				fi
+			done
+
+			if [ $ret -ne 0 ]; then
+				error "Download failed"
+				continue
+			fi
+
+			rm -rf $repo
+			tar -xzf ${repo}.abs.tar.gz
+			rm ${repo}.abs.tar.gz
+		fi
+	done
+}
+
 ##
 # Signal Traps
 ##
@@ -148,8 +191,8 @@ trap 'error "An unknown error has occured. Exiting..."; exit 1' ERR
 ##
 # Parse Options
 ##
-OPT_SHORT="hV"
-OPT_LONG="help,version"
+OPT_SHORT="hVt"
+OPT_LONG="help,version,tarball"
 OPT_TEMP="$(getopt -o "$OPT_SHORT" -l "$OPT_LONG" -n "$(basename "$0")" -- "$@" || echo 'GETOPT GO BANG!')"
 if echo "$OPT_TEMP" | grep -q 'GETOPT GO BANG!'; then
 	# This is a small hack to stop the script bailing with 'set -e'
@@ -162,6 +205,7 @@ while true; do
 	case "$1" in
 		-h|--help)     usage; exit $_E_OK;;
 		-V|--version)  version; exit $_E_OK;;
+		-t|--tarball)  TARBALL=1;;
 
 		--)            OPT_IND=0; shift; break;;
 		*)             usage; exit $_E_INVALID_OPTION;; 
@@ -195,7 +239,11 @@ fi
 ##
 # Go-go Update ABS tree!
 ##
-update
+if [ "$TARBALL" ]; then
+	update_tarball
+else
+	update_rsync
+fi
 
 exit $_E_OK
 
