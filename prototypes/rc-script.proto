@@ -55,7 +55,14 @@ case "$1" in
     sleep 3
     $0 start
     ;;
+
+  status)
+    stat_busy "Checking $daemon_name status";
+    ck_status $daemon_name
+    ;;
+
   *)
     echo "usage: $0 {start|stop|restart}"  
 esac
+
 exit 0
