@@ -24,7 +24,7 @@
 ABS_VERSION="%%ABS_VERSION%%"
 CONFDIR="%%CONF_DIR%%"
 SYNCCMD='rsync'
-SYNCARGS='-mrtv --no-motd --delete-after'
+SYNCARGS='-mrtv --no-motd --delete-after --no-p --no-o --no-g'
 BUG_REPORT_EMAIL=pacman-dev@archlinux.org
 
 ##
