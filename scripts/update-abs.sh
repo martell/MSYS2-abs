@@ -5,8 +5,14 @@
 
 for repo in testing core extra community; do
     for arch in i686 x86_64; do
-        tar -czf /srv/ftp/${repo}/os/${arch}/${repo}.abs.tar.gz \
-            -C /srv/abs/rsync/${arch} ${repo}
+        tarcmd="tar -czf /srv/ftp/${repo}/os/${arch}/${repo}.abs.tar.gz \
+                    -C /srv/abs/rsync/${arch} ${repo}"
+
+        if [ -d "/srv/abs/rsync/any/${repo}" ]; then
+            tarcmd="$tarcmd -C /srv/abs/rsync/any ${repo}"
+        fi
+
+	$tarcmd
     done
 done
 

@@ -136,7 +136,7 @@ update_rsync() {
 	fi
 
 	msg "Starting ABS sync..."
-	$SYNCCMD $SYNCARGS $INCLUDE $EXCLUDE ${SYNCSERVER}::abs/${ARCH}/ $ABSROOT
+	$SYNCCMD $SYNCARGS $INCLUDE $EXCLUDE ${SYNCSERVER}::abs/{${ARCH},any}/ $ABSROOT
 }
 
 update_tarball() {
