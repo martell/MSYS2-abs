@@ -1,7 +1,7 @@
 #!/bin/bash
 
-/usr/bin/svn2abs /srv/abs/checkout /srv/abs/rsync file:///srv/svn-packages
-/usr/bin/community2abs /srv/abs/rsync /srv/cvs/cvs-community
+/usr/bin/svn2abs /srv/abs/checkout/gerolde /srv/abs/rsync file:///srv/svn-packages
+/usr/bin/svn2abs /srv/abs/checkout/sigurd /srv/abs/rsync svn://aur.archlinux.org/srv/svn-packages
 
 for repo in testing core extra community; do
     for arch in i686 x86_64; do
