@@ -11,7 +11,7 @@ all: config_abs
 config_abs: 
 	sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
 	       -e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
-			abs makeworld scripts/svn2abs scripts/community2abs
+			abs makeworld scripts/svn2abs
 
 install:
 	# install the scripts
@@ -19,7 +19,6 @@ install:
 	install -m 755 abs $(DESTDIR)$(BINDIR)
 	install -m 755 makeworld $(DESTDIR)$(BINDIR)
 	install -m 755 scripts/svn2abs $(DESTDIR)$(BINDIR)
-	install -m 755 scripts/community2abs $(DESTDIR)$(BINDIR)
 	# install conf files
 	mkdir -p $(DESTDIR)$(CONFDIR)
 	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
