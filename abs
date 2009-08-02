@@ -2,7 +2,8 @@
 #
 #   abs - download a PKGBUILD tree from a CVS repository
 #
-#   Copyright (c) 2002-2007 by Judd Vinet <jvinet@zeroflux.org>
+#   Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>
+#   Copyright (C) 2007-2009 Aaron Griffin <aaron@archlinux.org>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -92,7 +93,8 @@ usage() {
 version() {
 	echo "abs $ABS_VERSION"
 	echo
-	echo "Copyright (C) 2002-2008 Judd Vinet <jvinet@zeroflux.org>."
+	echo "Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>"
+        echo "Copyright (C) 2007-2009 Aaron Griffin <aaron@archlinux.org>
 	echo
 	echo "This is free software; see the source for copying conditions."
 	echo "There is NO WARRANTY, to the extent permitted by law."
