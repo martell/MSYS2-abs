@@ -1,4 +1,4 @@
-ABS_VERSION=2.3.3
+ABS_VERSION=2.3.4
 BUILDDIR = build
 BINDIR = /usr/bin/
 CONFDIR = /etc/abs/
