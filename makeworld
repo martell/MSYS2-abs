@@ -3,7 +3,7 @@
 #   makeworld - a makepkg wrapper to build multiple packages
 #
 #   Copyright (C) 2002-2007 by Judd Vinet <jvinet@zeroflux.org>
-#   Copyright (C) 2007-2009 Aaron Griffin <aaron@archlinux.org>
+#   Copyright (C) 2007-2010 Aaron Griffin <aaron@archlinux.org>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ version() {
 	printf "makeworld %s\n" "$myver"
 	printf "\
 Copyright (C) 2002-2007 Judd Vinet <jvinet@zeroflux.org>\n\n\
-Copyright (C) 2007-2009 Aaron Griffin <aaron@archlinux.org>\n\n\
+Copyright (C) 2007-2010 Aaron Griffin <aaron@archlinux.org>\n\n\
 This is free software; see the source for copying conditions.\n\
 There is NO WARRANTY, to the extent permitted by law.\n"
 }
