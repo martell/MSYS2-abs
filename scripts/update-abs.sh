@@ -31,7 +31,7 @@ for arch in ${ARCHES[@]}; do
 done
 
 # generate tarballs for package mirrors
-for repo in testing core extra community; do
+for repo in testing core extra community community-testing; do
     for arch in ${ARCHES[@]/any/}; do
         tarcmd="tar -czf /srv/ftp/${repo}/os/${arch}/${repo}.abs.tar.gz \
                     -C /srv/abs/rsync/${arch} ${repo}"
