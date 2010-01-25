@@ -28,6 +28,7 @@ install:
 	install -m 644 prototypes/PKGBUILD-git.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-gnome.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-haskell.proto $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-hg.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-perl.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-rubygem.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-svn.proto $(DESTDIR)$(PROTOTYPEDIR)
@@ -45,6 +46,7 @@ uninstall:
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-gnome.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-haskell.proto
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-hg.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-perl.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-rubygem.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-svn.proto
