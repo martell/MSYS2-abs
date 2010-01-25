@@ -18,13 +18,9 @@ install:
 	mkdir -p $(DESTDIR)$(BINDIR)
 	install -m 755 abs $(DESTDIR)$(BINDIR)
 	install -m 755 makeworld $(DESTDIR)$(BINDIR)
-	install -m 755 scripts/svn2abs $(DESTDIR)$(BINDIR)
 	# install conf files
 	mkdir -p $(DESTDIR)$(CONFDIR)
 	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
-	# install /usr/share files
-	mkdir -p $(DESTDIR)$(SHAREDIR)
-	install -m 644 conf/rsyncd.conf.abs $(DESTDIR)$(SHAREDIR)
 	# install prototype files
 	mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
@@ -44,7 +40,6 @@ uninstall:
 	rm $(DESTDIR)$(BINDIR)/abs
 	rm $(DESTDIR)$(BINDIR)/makeworld
 	rm $(DESTDIR)$(CONFDIR)/abs.conf
-	rm $(DESTDIR)$(CONFDIR)/rsyncd.conf.abs
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-cvs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-darcs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
