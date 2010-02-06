@@ -103,6 +103,11 @@ version() {
 update_rsync() {
 	cd "$ABSROOT"
 
+	if [ ! "$(type -p rsync)" ]; then
+		error "missing rsync synchronization utility.  Install rsync."
+		exit $_E_MISSING_PROGRAM
+	fi
+
 	if [ "$CLPARAM" = "" ]; then
 		# using repos specified in abs.conf
 		for repo in "${REPOS[@]}"; do
@@ -231,11 +236,6 @@ fi
 if [ ! -w "$ABSROOT" ]; then
 	error "no write permissions in $ABSROOT"
 	exit $_E_CONFIG_ERROR 
-fi
-
-if [ ! "$(type -p rsync)" ]; then
-	error "missing rsync synchronization utility.  Install rsync."
-	exit $_E_MISSING_PROGRAM
 fi
 
 ##
