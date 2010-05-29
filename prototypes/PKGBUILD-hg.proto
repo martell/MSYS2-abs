@@ -36,10 +36,10 @@ build() {
 
   if [ -d $_hgrepo ] ; then
     cd $_hgrepo
-    hg pull -u || return 1
+    hg pull -u
     msg "The local files are updated."
   else
-    hg clone $_hgroot $_hgrepo || return 1
+    hg clone $_hgroot $_hgrepo
   fi
 
   msg "Mercurial checkout done or server timeout"
@@ -55,6 +55,6 @@ build() {
 
   ./autogen.sh
   ./configure --prefix=/usr
-  make || return 1
-  make DESTDIR="$pkgdir/" install || return 1
+  make
+  make DESTDIR="$pkgdir/" install
 } 

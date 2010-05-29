@@ -58,6 +58,6 @@ build() {
 
   ./autogen.sh
   ./configure --prefix=/usr
-  make || return 1
+  make
   make DESTDIR="$pkgdir/" install
 }
