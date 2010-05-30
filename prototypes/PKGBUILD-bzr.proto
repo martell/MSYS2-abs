@@ -34,11 +34,11 @@ build() {
   cd "$srcdir"
   msg "Connecting to Bazaar server...."
 
-  if [ -d $_gitname ] ; then
-    cd $_gitname && git pull origin
+  if [ -d $_bzrmod ] ; then
+    cd $_bzrmod && bzr merge
     msg "The local files are updated."
   else
-    git clone $_gitroot $_gitname
+    bzr branch $_bzrtrunk/$_bzrmod
   fi
 
   msg "Bazaar checkout done or server timeout"
