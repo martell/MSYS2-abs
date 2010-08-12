@@ -6,7 +6,7 @@
 # See http://wiki.archlinux.org/index.php/Perl_Package_Guidelines for more
 # information on Perl packaging.
 
-# Contributor: Your Name <youremail@domain.com>
+# Maintainer: Your Name <youremail@domain.com>
 pkgname=perl-foo-bar
 pkgver=VERSION
 pkgrel=1

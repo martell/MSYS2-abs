@@ -6,7 +6,7 @@
 # See http://wiki.archlinux.org/index.php/Gnome_package_guidelines for more
 # information on Gnome packaging.
 
-# Contributor: Your Name <youremail@domain.com>
+# Maintainer: Your Name <youremail@domain.com>
 pkgname=NAME
 pkgver=VERSION
 pkgrel=1
