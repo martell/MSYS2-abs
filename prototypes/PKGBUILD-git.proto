@@ -55,5 +55,9 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr
   make
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
   make DESTDIR="$pkgdir/" install
 } 

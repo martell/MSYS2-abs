@@ -52,5 +52,9 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr
   make
+}
+
+package() {
+  cd "$srcdir/$_svnmod-build"
   make DESTDIR="$pkgdir/" install
 }

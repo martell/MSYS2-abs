@@ -56,5 +56,9 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr
   make
+}
+
+package() {
+  cd "$srcdir/$_cvsmod-build"
   make DESTDIR="$pkgdir/" install
 }

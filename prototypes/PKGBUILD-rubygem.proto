@@ -6,7 +6,7 @@
 # See http://wiki.archlinux.org/index.php/Ruby_Gem_Package_Guidelines for more
 # information on Ruby Gem packaging.
 
-# Maintainer: YourName <YourEmail AT example DOT com>
+# Maintainer: Your Name <youremail@domain.com>
 pkgname=ruby-GEMNAME
 pkgver=VERSION
 pkgrel=1
@@ -20,9 +20,9 @@ source=(http://gems.rubyforge.org/gems/GEMNAME-$pkgver.gem)
 noextract=(GEMNAME-$pkgver.gem)
 md5sums=()
 
-build() {
+package() {
   cd $srcdir
-  # _gemdir is defined inside build() because if ruby[gems] is not installed on the system
+  # _gemdir is defined inside package() because if ruby[gems] is not installed on the system
   # makepkg will exit with an error when sourcing the PKGBUILD
   local _gemdir="$(ruby -rubygems -e'puts Gem.default_dir')"
 
