@@ -168,7 +168,7 @@ update_tarball() {
 
 			ret=0
 			for mirror in ${mirrorlist[@]}; do
-				tarball=$(echo $mirror | sed "s#\$repo#$repo#")
+				tarball=$(echo $mirror | sed "s#\$repo#$repo#;s#\$arch#$arch#")
 				tarball="${tarball}/${repo}.abs.tar.gz"
 				protocol=$(echo $tarball | cut -f1 -d":")
 				if [ "$protocol" == "file" ]; then
