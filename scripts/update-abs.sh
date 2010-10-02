@@ -12,8 +12,8 @@ for server in ${SERVERS[@]}; do
 done
 
 # create ABS trees 
-/usr/bin/svn2abs /srv/abs/checkout/gerolde /srv/abs/tree/gerolde file:///srv/svn-packages
-/usr/bin/svn2abs /srv/abs/checkout/sigurd /srv/abs/tree/sigurd svn://aur.archlinux.org/srv/svn-packages
+/srv/abs/svn2abs /srv/abs/checkout/gerolde /srv/abs/tree/gerolde file:///srv/svn-packages
+/srv/abs/svn2abs /srv/abs/checkout/sigurd /srv/abs/tree/sigurd file:///srv/svn-community
 
 # clean and regenerate ABS rsync folder
 for arch in ${ARCHES[@]}; do
