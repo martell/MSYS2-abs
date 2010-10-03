@@ -23,6 +23,7 @@ install:
 	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
 	# install prototype files
 	mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
+	install -m 644 prototypes/PKGBUILD-bzr.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-darcs.proto $(DESTDIR)$(PROTOTYPEDIR)
 	install -m 644 prototypes/PKGBUILD-git.proto $(DESTDIR)$(PROTOTYPEDIR)
@@ -41,6 +42,7 @@ uninstall:
 	rm $(DESTDIR)$(BINDIR)/abs
 	rm $(DESTDIR)$(BINDIR)/makeworld
 	rm $(DESTDIR)$(CONFDIR)/abs.conf
+	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-bzr.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-cvs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-darcs.proto
 	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
