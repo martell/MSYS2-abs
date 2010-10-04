@@ -52,7 +52,7 @@ This is free software; see the source for copying conditions.\n\
 There is NO WARRANTY, to the extent permitted by law.\n"
 }
 
-# Source makepkg.conf; fail if it is not found (need this for $CARCH)
+# Source makepkg.conf; fail if it is not found (need this for $CARCH, $PKGEXT)
 if [ -r "/etc/makepkg.conf" ]; then
 	source "/etc/makepkg.conf"
 else
@@ -134,14 +134,10 @@ for repo in $*; do
 		if [ -f PKGBUILD ]; then
 			. PKGBUILD
 			buildstatus=0
-			if [ ! -f "$dest/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.gz" ]; then
-
+			if [ ! -f "$dest/$pkgname-$pkgver-$pkgrel-$CARCH$PKGEXT" -a ! -f "$dest/$pkgname-$pkgver-$pkgrel-any$PKGEXT" ]; then
 				PKGDEST="$dest" makepkg $MAKEPKG_OPTS -m 2>&1 1>&2 | tee -a $toplevel/makepkg.log
 
-				#Tee screws up the reading of $? - just check for the completed
-				#package instead
-				#if [ $? -gt 0 ]; then 
-				if [ ! -f "$dest/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.gz" ]; then
+				if [ ${PIPESTATUS[0]} -ne 0 ]; then
 					buildstatus=2
 				else
 					buildstatus=1
