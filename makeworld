@@ -123,13 +123,7 @@ cd - &>/dev/null
 sd=$(date +"[%b %d %H:%M]")
 
 for repo in $*; do
-	if [ "$repo" = "community" ]; then
-		finddepth=2
-	else
-		finddepth=1
-	fi
-
-	for pkg in $(find "$toplevel/$repo" -maxdepth $finddepth -mindepth $finddepth -type d | sort); do
+	for pkg in $(find "$toplevel/$repo" -maxdepth 1 -mindepth 1 -type d | sort); do
 		cd $pkg
 		if [ -f PKGBUILD ]; then
 			. PKGBUILD
