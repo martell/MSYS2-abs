@@ -101,6 +101,8 @@ version() {
 }
 
 update_rsync() {
+	local INCLUDE EXCLUDE
+
 	cd "$ABSROOT"
 
 	if [ ! "$(type -p rsync)" ]; then
