@@ -246,7 +246,7 @@ fi
 ##
 
 # Use tarball method on first run
-[ "$(ls -A $ABSROOT | sed -e 's#local##' -e 's#README##')" ] || TARBALL=1
+[ "$(ls -A $ABSROOT | sed -e 's#local##' -e 's#README##')" -o "$CLPARAM" ] || TARBALL=1
 
 if [ "$TARBALL" ]; then
 	update_tarball
