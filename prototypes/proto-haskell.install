@@ -1,5 +1,5 @@
 pkgname=NAME
-HS_DIR=/usr/share/haskell/$pkgname
+HS_DIR=usr/share/haskell/$pkgname
 
 post_install() {
   ${HS_DIR}/register.sh
