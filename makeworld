@@ -79,7 +79,7 @@ for arg in $*; do
 			#   and let it error out later if it was invalid
 			MAKEPKG_OPTS="$MAKEPKG_OPTS $arg" ;;
 		-*)
-			while getopts "chisSbdfrBCemoSV-" opt; do
+			while getopts "AcCdefFghiLmorRsV-" opt; do
 				case $opt in
 					h)
 						usage; exit 0 ;;
