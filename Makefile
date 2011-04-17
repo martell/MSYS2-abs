@@ -5,6 +5,17 @@ CONFDIR = /etc/
 PROTOTYPEDIR = /usr/share/pacman/
 DESTDIR = $$PWD
 
+#### Output formatting ####
+SPC  = \x20
+RST  = \e[0m
+BOLD = \e[1m
+RED  = \e[1;31m
+YLW  = \e[1;33m
+IND1 = $(RED)===$(SPC)$(RST)
+IND2 = $(YLW)$(SPC)=>$(SPC)$(RST)
+MSG1 = $(IND1)$(BOLD)$(1)$(SPC)$(IND1)
+MSG2 = $(IND2)$(BOLD)$(1)$(RST)
+
 .PHONY: prepare
 prepare:
 	sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
