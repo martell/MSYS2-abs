@@ -5,9 +5,7 @@ CONFDIR = /etc/
 PROTOTYPEDIR = /usr/share/pacman/
 DESTDIR = $$PWD
 
-all: config_abs
-
-config_abs: 
+prepare:
 	sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
 	       -e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
 			abs makeworld scripts/svn2abs
@@ -58,7 +56,7 @@ uninstall:
 	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-info.install
 	rm $(DESTDIR)$(PROTOTYPEDIR)/rc-script.proto
 
-zip:
+release:
 	mkdir -p $(BUILDDIR)/abs
 	cp Makefile $(BUILDDIR)/abs/
 	cp abs $(BUILDDIR)/abs/
