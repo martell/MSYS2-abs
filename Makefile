@@ -18,9 +18,12 @@ MSG2 = $(IND2)$(BOLD)$(1)$(RST)
 
 .PHONY: prepare
 prepare:
-	sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
-	       -e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
-			abs makeworld scripts/svn2abs
+	@echo -e "$(call MSG1,Prepare abs for install)"
+	@echo -e "$(call MSG2,Setting version)"
+	@echo -e "$(call MSG2,Setting configuration directory )"
+	@sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
+		-e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
+		abs makeworld scripts/svn2abs
 
 .PHONY: install
 install:
