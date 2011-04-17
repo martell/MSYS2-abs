@@ -55,24 +55,28 @@ install:
 
 .PHONY: uninstall
 uninstall:
-	rm $(DESTDIR)$(BINDIR)/abs
-	rm $(DESTDIR)$(BINDIR)/makeworld
-	rm $(DESTDIR)$(CONFDIR)/abs.conf
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-bzr.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-cvs.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-darcs.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-gnome.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-haskell.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-hg.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-perl.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-python.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-rubygem.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-svn.proto
-	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-gnome.install
-	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-haskell.install
-	rm $(DESTDIR)$(PROTOTYPEDIR)/proto-info.install
-	rm $(DESTDIR)$(PROTOTYPEDIR)/rc-script.proto
+	@echo -e "$(call MSG1,abs uninstall)"
+	@echo -e "$(call MSG2,Removing scripts)"
+	@rm $(DESTDIR)$(BINDIR)/abs
+	@rm $(DESTDIR)$(BINDIR)/makeworld
+	@echo -e "$(call MSG2,Removing configuration file)"
+	@rm $(DESTDIR)$(CONFDIR)/abs.conf
+	@echo -e "$(call MSG2,Removing prototype files)"
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-bzr.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-cvs.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-darcs.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-git.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-gnome.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-haskell.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-hg.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-perl.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-python.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-rubygem.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/PKGBUILD-svn.proto
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/proto-gnome.install
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/proto-haskell.install
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/proto-info.install
+	@rm $(DESTDIR)$(PROTOTYPEDIR)/rc-script.proto
 
 .PHONY: release
 release:
