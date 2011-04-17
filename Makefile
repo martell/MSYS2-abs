@@ -80,15 +80,20 @@ uninstall:
 
 .PHONY: release
 release:
-	mkdir -p $(BUILDDIR)/abs
-	cp Makefile $(BUILDDIR)/abs/
-	cp abs $(BUILDDIR)/abs/
-	cp makeworld $(BUILDDIR)/abs/
-	cp README $(BUILDDIR)/abs/
-	cp COPYING $(BUILDDIR)/abs/
-	cp -R conf $(BUILDDIR)/abs/
-	cp -R prototypes $(BUILDDIR)/abs/
-	cp -R scripts $(BUILDDIR)/abs/
-	cd $(BUILDDIR) && tar czf abs-$(ABS_VERSION).tar.gz "abs/"
-	mv $(BUILDDIR)/abs-$(ABS_VERSION).tar.gz .
-	rm -rf $(BUILDDIR)
+	@echo -e "$(call MSG1,Build abs-$(ABS_VERSION) release)"
+	@echo -e "$(call MSG2,Creating build directory)"
+	@mkdir -p $(BUILDDIR)/abs
+	@echo -e "$(call MSG2,Copying files)"
+	@cp Makefile $(BUILDDIR)/abs/
+	@cp abs $(BUILDDIR)/abs/
+	@cp makeworld $(BUILDDIR)/abs/
+	@cp README $(BUILDDIR)/abs/
+	@cp COPYING $(BUILDDIR)/abs/
+	@cp -R conf $(BUILDDIR)/abs/
+	@cp -R prototypes $(BUILDDIR)/abs/
+	@cp -R scripts $(BUILDDIR)/abs/
+	@echo -e "$(call MSG2,Tarring files)"
+	@cd $(BUILDDIR) && tar czf abs-$(ABS_VERSION).tar.gz "abs/"
+	@mv $(BUILDDIR)/abs-$(ABS_VERSION).tar.gz .
+	@echo -e "$(call MSG2,Removing build directory)"
+	@rm -rf $(BUILDDIR)
