@@ -27,30 +27,31 @@ prepare:
 
 .PHONY: install
 install:
-	# install the scripts
-	mkdir -p $(DESTDIR)$(BINDIR)
-	install -m 755 abs $(DESTDIR)$(BINDIR)
-	install -m 755 makeworld $(DESTDIR)$(BINDIR)
-	# install conf files
-	mkdir -p $(DESTDIR)$(CONFDIR)
-	install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
-	# install prototype files
-	mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-bzr.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-darcs.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-git.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-gnome.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-haskell.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-hg.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-perl.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-python.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-rubygem.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/PKGBUILD-svn.proto $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/proto-gnome.install $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/proto-haskell.install $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/proto-info.install $(DESTDIR)$(PROTOTYPEDIR)
-	install -m 644 prototypes/rc-script.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@echo -e "$(call MSG1,abs install)"
+	@echo -e "$(call MSG2,Installing scripts into $(DESTDIR)$(BINDIR))"
+	@mkdir -p $(DESTDIR)$(BINDIR)
+	@install -m 755 abs $(DESTDIR)$(BINDIR)
+	@install -m 755 makeworld $(DESTDIR)$(BINDIR)
+	@echo -e "$(call MSG2,Installing abs configuration file into $(DESTDIR)$(CONFDIR))"
+	@mkdir -p $(DESTDIR)$(CONFDIR)
+	@install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
+	@echo -e "$(call MSG2,Installing prototype files into $(DESTDIR)$(PROTOTYPEDIR))"
+	@mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-bzr.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-darcs.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-git.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-gnome.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-haskell.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-hg.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-perl.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-python.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-rubygem.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/PKGBUILD-svn.proto $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/proto-gnome.install $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/proto-haskell.install $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/proto-info.install $(DESTDIR)$(PROTOTYPEDIR)
+	@install -m 644 prototypes/rc-script.proto $(DESTDIR)$(PROTOTYPEDIR)
 
 .PHONY: uninstall
 uninstall:
