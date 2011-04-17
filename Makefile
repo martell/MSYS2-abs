@@ -1,10 +1,9 @@
-ABS_VERSION=2.4.2
+ABS_VERSION = 2.4.2
 BUILDDIR = build
 BINDIR = /usr/bin/
-CONFDIR = /etc/abs/
-SHAREDIR = /usr/share/abs/
+CONFDIR = /etc/
 PROTOTYPEDIR = /usr/share/pacman/
-DESTDIR =
+DESTDIR = $$PWD
 
 all: config_abs
 
