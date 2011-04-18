@@ -1,4 +1,4 @@
-ABS_VERSION = 2.4.2
+ABS_VERSION = 2.4.3
 DESTDIR = $$PWD
 BINDIR = /usr/bin/
 CONFDIR = /etc/
