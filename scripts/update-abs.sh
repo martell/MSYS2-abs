@@ -11,7 +11,7 @@ for server in ${SERVERS[@]}; do
    [ -d /srv/abs/tree/$server ] && rm -rf /srv/abs/tree/$server/*
 done
 
-# create ABS trees 
+# create ABS trees
 /srv/abs/svn2abs /srv/abs/checkout/gerolde /srv/abs/tree/gerolde file:///srv/svn-packages
 /srv/abs/svn2abs /srv/abs/checkout/sigurd /srv/abs/tree/sigurd file:///srv/svn-community
 

@@ -40,7 +40,7 @@ function usage()
 	echo "Usage: $0 [svn checkout dir] [abs dir] [svn repo location]"
 	echo "       $0 (-v | --version)"
 	echo "       $0 (-h | --help)"
-	echo 
+	echo
 	echo "Takes svn repo structure of form \$pkgname/repos/\$repo-\$arch"
 	echo "and converts it to the ABS structure of \$arch/\$repo/\$pkgname"
 	echo "then syncs ABS tree in $ABS_DIR with extracted structure."
@@ -84,15 +84,15 @@ function checkout_svn()
 		mkdir "$targetdir"
 	fi
 
-	cd "$targetdir" 
+	cd "$targetdir"
 
 	# Simple check - if $targetdir/.svn exists, then we can assume
-	# the repo has been checked out (ie. we can just run an update 
+	# the repo has been checked out (ie. we can just run an update
 	# instead of a full checkout)
 	if [ -d "./.svn" ]; then
 		# Checkout already exists - just update it
 		echo "Updating SVN repo..."
-		svn update 
+		svn update
 	else
 		# Checkout the tree into $targetdir
 		echo "Checking out SVN repo..."

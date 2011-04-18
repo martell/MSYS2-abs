@@ -219,7 +219,7 @@ while true; do
 		-t|--tarball)  TARBALL=1;;
 
 		--)            OPT_IND=0; shift; break;;
-		*)             usage; exit $_E_INVALID_OPTION;; 
+		*)             usage; exit $_E_INVALID_OPTION;;
 	esac
 	shift
 done
@@ -229,7 +229,7 @@ if [ "$#" -gt "0" ]; then
 	REPOS=("$@")
 fi
 
-## 
+##
 # Verify Config
 ##
 if [ ! -d "$ABSROOT" ]; then
@@ -239,7 +239,7 @@ fi
 
 if [ ! -w "$ABSROOT" ]; then
 	error "no write permissions in $ABSROOT"
-	exit $_E_CONFIG_ERROR 
+	exit $_E_CONFIG_ERROR
 fi
 
 ##

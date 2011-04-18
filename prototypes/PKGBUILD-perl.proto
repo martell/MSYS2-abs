@@ -31,7 +31,7 @@ build() {
   # install module in vendor directories.
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
   make
-  
+
   ## for packages with Build.PL, do this instead:
   # perl Build.PL installdirs=vendor destdir="$pkgdir/"
   # perl Build
