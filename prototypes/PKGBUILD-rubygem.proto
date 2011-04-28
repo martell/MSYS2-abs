@@ -21,12 +21,12 @@ noextract=(GEMNAME-$pkgver.gem)
 md5sums=()
 
 package() {
-  cd $srcdir
+  cd "$srcdir"
   # _gemdir is defined inside package() because if ruby[gems] is not installed on the system
   # makepkg will exit with an error when sourcing the PKGBUILD
   local _gemdir="$(ruby -rubygems -e'puts Gem.default_dir')"
 
-  gem install --ignore-dependencies -i "$pkgdir$_gemdir" GEMNAME-$pkgver.gem
+  gem install --ignore-dependencies -i "$pkgdir$_gemdir" "GEMNAME-$pkgver.gem"
 }
 
 # vim:set ts=2 sw=2 et:

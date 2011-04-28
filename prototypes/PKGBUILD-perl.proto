@@ -7,13 +7,16 @@
 # information on Perl packaging.
 
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=perl-foo-bar
+_author=AUTHOR_NAME
+_perlmod=MODNAME
+pkgname=perl-$_perlmod
 pkgver=VERSION
 pkgrel=1
 pkgdesc=""
 arch=()
 url=""
 license=('GPL' 'PerlArtistic')
+groups=()
 depends=('perl>=5.10.0')
 makedepends=()
 provides=()
@@ -26,22 +29,22 @@ source=(http://search.cpan.org/CPAN/authors/id/***/***-$pkgver.tar.gz)
 md5sums=()
 
 build() {
-  cd "$srcdir/***-$pkgver"
+  cd "$srcdir/$_perlmod-$pkgver"
 
-  # install module in vendor directories.
+  # Install module in vendor directories.
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
   make
 
-  ## for packages with Build.PL, do this instead:
+  ## For packages with Build.PL, do this instead:
   # perl Build.PL installdirs=vendor destdir="$pkgdir/"
   # perl Build
 }
 
 package() {
-  cd "$srcdir/***-$pkgver"
+  cd "$srcdir/$_perlmod-$pkgver"
   make install DESTDIR="$pkgdir/"
 
-  ## for packages with Build.PL, do this instead:
+  ## For packages with Build.PL, do this instead:
   # perl Build install
 }
 

@@ -27,35 +27,32 @@ source=()
 noextract=()
 md5sums=() #generate with 'makepkg -g'
 
-_darcstrunk="DARCSURL"
-_darcsmod="MODNAME"
+_darcstrunk=DARCSURL
+_darcsmod=MODNAME
 
 build() {
   cd "$srcdir"
+  msg "Checking for previous build...."
 
-  msg "Checking for previous build"
-
-  if [[ -d $_darcsmod/_darcs ]]
-  then
+  if [[ -d "$_darcsmod/_darcs" ]]; then
     msg "Retrieving missing patches"
-    cd $_darcsmod
-    darcs pull -a $_darcstrunk/$_darcsmod
+    cd "$_darcsmod"
+    darcs pull -a "$_darcstrunk/$_darcsmod"
   else
     msg "Retrieving complete sources"
-    darcs get --partial --set-scripts-executable $_darcstrunk/$_darcsmod
-    cd $_darcsmod
+    darcs get --partial --set-scripts-executable "$_darcstrunk/$_darcsmod"
+    cd "$_darcsmod"
   fi
 
   rm -rf "$srcdir/$_darcsmod-build"
   cp -r "$srcdir/$_darcsmod" "$srcdir/$_darcsmod-build"
   cd "$srcdir/$_darcsmod-build"
 
-  msg "Starting build"
+  msg "Starting build..."
 
   #
-  # BUILD
+  # BUILD HERE
   #
-
   ./autogen.sh
   ./configure --prefix=/usr
   make
@@ -65,3 +62,5 @@ package() {
   cd "$srcdir/$_darcsmod-build"
   make DESTDIR="$pkgdir/" install
 }
+
+# vim:set ts=2 sw=2 et:

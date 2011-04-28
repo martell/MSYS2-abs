@@ -7,13 +7,14 @@
 # information on Python packaging.
 
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=python-<modulename>
+pkgname=python-NAME
 pkgver=VERSION
 pkgrel=1
 pkgdesc=""
 arch=()
 url=""
 license=('GPL')
+groups=()
 depends=('python')
 makedepends=()
 provides=()
@@ -26,8 +27,8 @@ source=()
 md5sums=()
 
 package() {
-  cd "$srcdir/***-$pkgver"
-  python setup.py install --root=$pkgdir/ --optimize=1
+  cd "$srcdir/$pkgname-$pkgver"
+  python setup.py install --root="$pkgdir/" --optimize=1
 }
 
 # vim:set ts=2 sw=2 et:

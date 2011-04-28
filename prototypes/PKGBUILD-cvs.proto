@@ -27,32 +27,31 @@ source=()
 noextract=()
 md5sums=() #generate with 'makepkg -g'
 
-_cvsroot="CVSROOT"
-_cvsmod="MODNAME"
+_cvsroot=CVSROOT
+_cvsmod=MODNAME
 
 build() {
   cd "$srcdir"
   msg "Connecting to $_cvsmod.sourceforge.net CVS server...."
-  if [ -d $_cvsmod/CVS ]; then
-    cd $_cvsmod
+
+  if [[ -d "$_cvsmod/CVS" ]]; then
+    cd "$_cvsmod"
     cvs -z3 update -d
   else
-    cvs -z3 -d $_cvsroot co -D $pkgver -f $_cvsmod
-    cd $_cvsmod
+    cvs -z3 -d "$_cvsroot" co -D "$pkgver" -f "$_cvsmod"
+    cd "$_cvsmod"
   fi
 
   msg "CVS checkout done or server timeout"
-  msg "Starting make..."
+  msg "Starting build..."
 
   rm -rf "$srcdir/$_cvsmod-build"
   cp -r "$srcdir/$_cvsmod" "$srcdir/$_cvsmod-build"
   cd "$srcdir/$_cvsmod-build"
 
-
   #
   # BUILD HERE
   #
-
   ./autogen.sh
   ./configure --prefix=/usr
   make
@@ -62,3 +61,5 @@ package() {
   cd "$srcdir/$_cvsmod-build"
   make DESTDIR="$pkgdir/" install
 }
+
+# vim:set ts=2 sw=2 et:

@@ -32,8 +32,8 @@ build() {
   runhaskell Setup build
 
   #
-  # Setup registration phase for library packages
-  # Also requires an install script. See proto-haskell.install
+  # Setup registration phase for library packages. This also requires an install
+  # script; see proto-haskell.install.
   #
   runhaskell Setup register --gen-script
   runhaskell Setup unregister --gen-script
@@ -43,8 +43,8 @@ package() {
   cd "$srcdir/***-$pkgver"
   runhaskell Setup copy --destdir="$pkgdir/"
 
-  install -Dm744 register.sh "$pkgdir"/usr/share/haskell/$pkgname/register.sh
-  install -m744 unregister.sh "$pkgdir"/usr/share/haskell/$pkgname/unregister.sh
+  install -Dm744 register.sh "$pkgdir/usr/share/haskell/$pkgname/register.sh"
+  install -m744 unregister.sh "$pkgdir/usr/share/haskell/$pkgname/unregister.sh"
 }
 
 # vim:set ts=2 sw=2 et:
