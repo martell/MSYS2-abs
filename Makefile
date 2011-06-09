@@ -78,8 +78,8 @@ uninstall:
 	@rm $(DESTDIR)$(PROTOTYPEDIR)proto-info.install
 	@rm $(DESTDIR)$(PROTOTYPEDIR)rc-script.proto
 
-.PHONY: release
-release:
+.PHONY: dist
+dist:
 	@echo -e "$(call MSG1,Build abs-$(ABS_VERSION) release)"
 	@echo -e "$(call MSG2,Creating build directory)"
 	@mkdir $(BUILDDIR)
