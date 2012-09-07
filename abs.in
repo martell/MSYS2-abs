@@ -137,7 +137,7 @@ update_rsync() {
 	fi
 
 	msg "Starting ABS sync..."
-	$SYNCCMD $SYNCARGS $INCLUDE $EXCLUDE ${SYNCSERVER}::abs/{${ARCH},any}/ $ABSROOT
+	$SYNCCMD $SYNCARGS $INCLUDE $EXCLUDE ${SYNCSERVER}::abs/{${ARCH},any}/ .
 }
 
 curl_get_file() {
