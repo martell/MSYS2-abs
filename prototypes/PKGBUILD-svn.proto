@@ -44,7 +44,7 @@ build() {
   msg "Starting build..."
 
   rm -rf "$srcdir/$_svnmod-build"
-  cp -r "$srcdir/$_svnmod" "$srcdir/$_svnmod-build"
+  svn export "$srcdir/$_svnmod" "$srcdir/$_svnmod-build"
   cd "$srcdir/$_svnmod-build"
 
   #
