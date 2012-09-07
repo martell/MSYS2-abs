@@ -140,11 +140,23 @@ update_rsync() {
 	$SYNCCMD $SYNCARGS $INCLUDE $EXCLUDE ${SYNCSERVER}::abs/{${ARCH},any}/ $ABSROOT
 }
 
+curl_get_file() {
+	curl -sfJOL "$1"
+}
+
+wget_get_file() {
+	wget -q "$1"
+}
+
 update_tarball() {
 	cd "$ABSROOT"
 
-	if [ ! "$(type -p wget)" ]; then
-		error "missing wget download utility.  Install wget."
+	if type -P curl >/dev/null; then
+		downloader=curl_get_file
+	elif type -P wget >/dev/null; then
+		downloader=wget_get_file
+	else
+		error "missing download utility.  Install curl or wget."
 		exit $_E_MISSING_PROGRAM
 	fi
 
@@ -173,7 +185,7 @@ update_tarball() {
 						ret=0
 					fi
 				else
-					wget -q $tarball || ret=$?
+					"$downloader" $tarball || ret=$?
 				fi
 				if [ $ret -eq 0 ]; then
 					break
