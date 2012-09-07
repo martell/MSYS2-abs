@@ -5,6 +5,13 @@ CONFDIR = /etc/
 PROTOTYPEDIR = /usr/share/pacman/
 BUILDDIR = build/
 
+scripts = \
+	abs \
+	makeworld \
+	scripts/svn2abs
+
+all: $(scripts)
+
 #### Output formatting ####
 SPC  = \x20
 RST  = \e[0m
@@ -16,22 +23,28 @@ IND2 = $(YLW)$(SPC)=>$(SPC)$(RST)
 MSG1 = $(IND1)$(BOLD)$(1)$(SPC)$(IND1)
 MSG2 = $(IND2)$(BOLD)$(1)$(RST)
 
-.PHONY: prepare
-prepare:
-	@echo -e "$(call MSG1,Prepare abs for install)"
-	@echo -e "$(call MSG2,Setting version)"
-	@echo -e "$(call MSG2,Setting configuration directory )"
-	@sed -i -e 's#%%ABS_VERSION%%#$(ABS_VERSION)#g' \
-		-e 's#%%CONF_DIR%%#$(CONFDIR)#g' \
-		abs makeworld scripts/svn2abs
+V_GEN = $(_v_GEN_$(V))
+_v_GEN_ = $(_v_GEN_0)
+_v_GEN_0 = @echo "  GEN     " $@;
+_v_GEN_1 =
+
+%: %.in
+	$(edit) $<
+	@chmod 755 $@
+
+edit = \
+	$(V_GEN) sed \
+	-e 's,%%CONF_DIR%%,$(CONFDIR),g' \
+	-e 's,%%ABS_VERSION%%,$(ABS_VERSION),g' \
+	< $< > $@ || rm $@
 
 .PHONY: install
-install:
+install: $(scripts)
 	@echo -e "$(call MSG1,abs install)"
 	@echo -e "$(call MSG2,Installing scripts into $(DESTDIR)$(BINDIR))"
 	@mkdir -p $(DESTDIR)$(BINDIR)
-	@install -m 755 abs $(DESTDIR)$(BINDIR)
-	@install -m 755 makeworld $(DESTDIR)$(BINDIR)
+	@install -m755 abs $(DESTDIR)$(BINDIR)
+	@install -m755 makeworld $(DESTDIR)$(BINDIR)
 	@echo -e "$(call MSG2,Installing abs configuration file into $(DESTDIR)$(CONFDIR))"
 	@mkdir -p $(DESTDIR)$(CONFDIR)
 	@install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
@@ -97,3 +110,6 @@ dist:
 	@tar czf abs-$(ABS_VERSION).tar.gz $(BUILDDIR) --transform="s#^$(BUILDDIR)*#abs/#"
 	@echo -e "$(call MSG2,Removing build directory)"
 	@rm -rf $(BUILDDIR)
+
+clean:
+	$(RM) $(scripts)
