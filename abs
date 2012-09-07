@@ -161,7 +161,11 @@ update_tarball() {
 	fi
 
 	if [ -f "$MIRRORLIST" ]; then
-		mirrorlist=$(grep "^Server" $MIRRORLIST | cut -f3 -d" ")
+		mirrorlist=($(grep "^Server" $MIRRORLIST | cut -f3 -d" "))
+		if (( ${#mirrorlist[@]} == 0 )); then
+			error "No mirrors found in mirrorlist file $MIRRORLIST"
+			exit $_E_CONFIG_ERROR
+		fi
 	else
 		error "Could not find pacman mirrorlist file $MIRRORLIST"
 		exit $_E_CONFIG_ERROR
