@@ -262,6 +262,8 @@ fi
 # Go-go Update ABS tree!
 ##
 
+umask 0022
+
 # Use tarball method on first run
 [ "$(ls -A $ABSROOT | sed -e 's#local##' -e 's#README##')" -o "$CLPARAM" ] || TARBALL=1
 
