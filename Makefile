@@ -93,23 +93,7 @@ uninstall:
 
 .PHONY: dist
 dist:
-	@echo -e "$(call MSG1,Build abs-$(ABS_VERSION) release)"
-	@echo -e "$(call MSG2,Creating build directory)"
-	@mkdir $(BUILDDIR)
-	@echo -e "$(call MSG2,Copying files)"
-	@cp abs $(BUILDDIR)
-	@cp AUTHORS $(BUILDDIR)
-	@cp COPYING $(BUILDDIR)
-	@cp Makefile $(BUILDDIR)
-	@cp makeworld $(BUILDDIR)
-	@cp README $(BUILDDIR)
-	@cp -R conf $(BUILDDIR)
-	@cp -R prototypes $(BUILDDIR)
-	@cp -R scripts $(BUILDDIR)
-	@echo -e "$(call MSG2,Tarring files)"
-	@tar czf abs-$(ABS_VERSION).tar.gz $(BUILDDIR) --transform="s#^$(BUILDDIR)*#abs/#"
-	@echo -e "$(call MSG2,Removing build directory)"
-	@rm -rf $(BUILDDIR)
+	git archive --format=tar --prefix=abs-$(ABS_VERSION)/ $(ABS_VERSION) | gzip -9 > abs-$(ABS_VERSION).tar.gz
 
 clean:
 	$(RM) $(scripts)
