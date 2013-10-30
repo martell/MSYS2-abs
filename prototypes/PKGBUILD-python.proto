@@ -7,12 +7,14 @@
 # information on Python packaging.
 
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=python-NAME
+_pythonname=NAME
+_firstletter="${_pythonname:0:1}" # extract first letter for use in source URL
+pkgname="python-$_pythonname"
 pkgver=VERSION
 pkgrel=1
 pkgdesc=""
 arch=()
-url=""
+url="https://pypi.python.org/pypi/$_pythonname/"
 license=('GPL')
 groups=()
 depends=('python')
@@ -23,11 +25,11 @@ replaces=()
 backup=()
 options=(!emptydirs)
 install=
-source=()
+source=("https://pypi.python.org/packages/source/$_firstletter/$_pythonname/$_pythonname-$pkgver.tar.gz")
 md5sums=()
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir/$_pythonname-$pkgver"
   python setup.py install --root="$pkgdir/" --optimize=1
 }
 
