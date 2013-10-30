@@ -3,7 +3,7 @@
 # NOTE: Please fill out the license field for your package! If it is unknown,
 # then please put 'unknown'.
 
-# See http://wiki.archlinux.org/index.php/Python_Package_Guidelines for more
+# See https://wiki.archlinux.org/index.php/Python_Package_Guidelines for more
 # information on Python packaging.
 
 # Maintainer: Your Name <youremail@domain.com>
@@ -23,7 +23,7 @@ provides=()
 conflicts=()
 replaces=()
 backup=()
-options=(!emptydirs)
+options=('!emptydirs')
 install=
 source=("https://pypi.python.org/packages/source/$_firstletter/$_pythonname/$_pythonname-$pkgver.tar.gz")
 md5sums=()

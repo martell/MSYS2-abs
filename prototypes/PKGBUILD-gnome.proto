@@ -3,8 +3,8 @@
 # NOTE: Please fill out the license field for your package! If it is unknown,
 # then please put 'unknown'.
 
-# See http://wiki.archlinux.org/index.php/Gnome_package_guidelines for more
-# information on Gnome packaging.
+# See https://wiki.archlinux.org/index.php/GNOME_Package_Guidelines for more
+# information on GNOME packaging.
 
 # Maintainer: Your Name <youremail@domain.com>
 pkgname=NAME
@@ -22,8 +22,8 @@ conflicts=()
 replaces=()
 backup=()
 options=()
-install=$pkgname.install
-source=($pkgname-$pkgver.tar.gz)
+install="$pkgname.install"
+source=("$pkgname-$pkgver.tar.gz")
 noextract=()
 md5sums=() #generate with 'makepkg -g'
 

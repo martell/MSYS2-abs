@@ -3,12 +3,12 @@
 # NOTE: Please fill out the license field for your package! If it is unknown,
 # then please put 'unknown'.
 
-# See http://wiki.archlinux.org/index.php/Haskell_package_guidelines for more
+# See https://wiki.archlinux.org/index.php/Haskell_Package_Guidelines for more
 # information on Haskell packaging.
 
 # Maintainer: Your Name <youremail@domain.com>
 _hkgname=NAME
-pkgname=$_hkgname
+pkgname="$_hkgname"
 pkgver=VERSION
 pkgrel=1
 pkgdesc=""
@@ -22,8 +22,8 @@ conflicts=()
 replaces=()
 backup=()
 options=()
-install=$pkgname.install
-source=(http://hackage.haskell.org/packages/archive/$_hkgname/$pkgver/$_hkgname-$pkgver.tar.gz)
+install="$pkgname.install"
+source=("http://hackage.haskell.org/packages/archive/$_hkgname/$pkgver/$_hkgname-$pkgver.tar.gz")
 md5sums=()
 
 build() {

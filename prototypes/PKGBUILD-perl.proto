@@ -13,7 +13,7 @@
 # Maintainer: Your Name <youremail@domain.com>
 _perlmod=MODNAME
 _modnamespace=MODULE-NAMESPACE
-pkgname=perl-$_perlmod
+pkgname="perl-$_perlmod"
 pkgver=VERSION
 pkgrel=1
 pkgdesc=""
