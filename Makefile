@@ -50,21 +50,14 @@ install: $(scripts)
 	@install -m 644 conf/abs.conf $(DESTDIR)$(CONFDIR)
 	@echo -e "$(call MSG2,Installing prototype files into $(DESTDIR)$(PROTOTYPEDIR))"
 	@mkdir -p $(DESTDIR)$(PROTOTYPEDIR)
-	@install -m 644 prototypes/PKGBUILD-bzr.proto $(DESTDIR)$(PROTOTYPEDIR)
-	@install -m 644 prototypes/PKGBUILD-cvs.proto $(DESTDIR)$(PROTOTYPEDIR)
-	@install -m 644 prototypes/PKGBUILD-darcs.proto $(DESTDIR)$(PROTOTYPEDIR)
-	@install -m 644 prototypes/PKGBUILD-git.proto $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/PKGBUILD-gnome.proto $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/PKGBUILD-haskell.proto $(DESTDIR)$(PROTOTYPEDIR)
-	@install -m 644 prototypes/PKGBUILD-hg.proto $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/PKGBUILD-perl.proto $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/PKGBUILD-python.proto $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/PKGBUILD-rubygem.proto $(DESTDIR)$(PROTOTYPEDIR)
-	@install -m 644 prototypes/PKGBUILD-svn.proto $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/proto-gnome.install $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/proto-haskell.install $(DESTDIR)$(PROTOTYPEDIR)
 	@install -m 644 prototypes/proto-info.install $(DESTDIR)$(PROTOTYPEDIR)
-	@install -m 644 prototypes/rc-script.proto $(DESTDIR)$(PROTOTYPEDIR)
 
 .PHONY: uninstall
 uninstall:
@@ -75,21 +68,14 @@ uninstall:
 	@echo -e "$(call MSG2,Removing configuration file)"
 	@rm $(DESTDIR)$(CONFDIR)abs.conf
 	@echo -e "$(call MSG2,Removing prototype files)"
-	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-bzr.proto
-	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-cvs.proto
-	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-darcs.proto
-	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-git.proto
 	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-gnome.proto
 	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-haskell.proto
-	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-hg.proto
 	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-perl.proto
 	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-python.proto
 	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-rubygem.proto
-	@rm $(DESTDIR)$(PROTOTYPEDIR)PKGBUILD-svn.proto
 	@rm $(DESTDIR)$(PROTOTYPEDIR)proto-gnome.install
 	@rm $(DESTDIR)$(PROTOTYPEDIR)proto-haskell.install
 	@rm $(DESTDIR)$(PROTOTYPEDIR)proto-info.install
-	@rm $(DESTDIR)$(PROTOTYPEDIR)rc-script.proto
 
 .PHONY: dist
 dist:
